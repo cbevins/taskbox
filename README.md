@@ -3,6 +3,8 @@
 ---
 
 # svelte app
+This is the Storybook for Svelte Tutorial located at
+https://www.learnstorybook.com/intro-to-storybook/svelte/en/get-started/
 
 This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
 

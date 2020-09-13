@@ -2,7 +2,7 @@
 
 import Task from './Task.svelte';
 import { action } from '@storybook/addon-actions';
-
+import { withKnobs, object } from '@storybook/addon-knobs';
 /*
 To tell Storybook about the component we are documenting,
 we create a default export that contains:
@@ -12,6 +12,7 @@ we create a default export that contains:
 */
 export default {
   title: 'Task',
+  decorators: [withKnobs],
   excludeStories: /.*Data$/,
 };
 
@@ -61,7 +62,8 @@ The story is a function that returns a rendered element
 export const Default = () => ({
   Component: Task,
   props: {
-    task: taskData,
+    // task: taskData,
+    task: object('task', { ...taskData }),
   },
   on: {
     ...actionsData,
@@ -91,5 +93,16 @@ export const Archived = () => ({
   },
   on: {
     ...actionsData,
+  },
+});
+
+const longTitle = `This task's name is absurdly large. In fact, I think if I keep going I might end up with content overflow. What will happen? The star that represents a pinned task could have text overlapping. The text could cut-off abruptly when it reaches the star. I hope not!`;
+export const LongTitle = () => ({
+  Component: Task,
+  props: {
+    task: {
+      ...taskData,
+      title: longTitle,
+    },
   },
 });

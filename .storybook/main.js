@@ -1,7 +1,7 @@
 module.exports = {
   stories: [
-    '../src/components/**/*.stories.js',
-    '../src/stories/**/*.stories.js'
+    '../src/components/svelte/**/*.stories.js',
+    // '../src/stories/**/*.stories.js'
   ],
   addons: [
     '@storybook/addon-actions',

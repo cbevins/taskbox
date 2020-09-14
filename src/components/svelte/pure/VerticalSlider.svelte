@@ -1,29 +1,25 @@
 <script>
-export let slider = {
-  label: '',
-  value: 0,
-  min: 0,
-  max: 100,
-  step: 1,
-  line1: '',
-  line2: '',
-}
+export let label = ''
+export let value = 0
+export let min = 0
+export let max = 100
+export let step = 1
+export let line1 = ''
+export let line2 = ''
 </script>
 
-<div class="row">
-  <div class="vslider-slider">
-    <p class="vslider-label">{slider.label}</p>
-    <p class="vslider-value">{slider.line1}</p>
-    <p class="vslider-value">{slider.line2}</p>
-    <div class="vslider-wrapper">
-      <!-- Bubble the on:input event bubbles up to its parent component -->
-      <input on:input bind:value={slider.value} type="range"
-        min={slider.min} max={slider.max} step={slider.step} />
+  <div class="row">
+    <div class="vslider-slider">
+      <p class="vslider-label">{label}</p>
+      <p class="vslider-value">{line1}</p>
+      <p class="vslider-value">{line2}</p>
+      <div class="vslider-wrapper">
+        <!-- Bubble the on:input event bubbles up to its parent component -->
+        <input on:input bind:value={value} type="range"
+          min={min} max={max} step={step} />
+      </div>
     </div>
   </div>
-</div>
-
-<div>Value is {slider.value}</div>
 
 <style>
 * { box-sizing: border-box;}

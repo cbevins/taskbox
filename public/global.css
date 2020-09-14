@@ -63,7 +63,6 @@ button:focus {
 }
 /* Reset.less
  * Props to Eric Meyer (meyerweb.com) for his CSS reset file. We're using an adapted version here	that cuts out some of the reset HTML elements we will never need here (i.e., dfn, samp, etc).
- * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,800');
 html,
 body {
@@ -468,7 +467,6 @@ input:-webkit-autofill {
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -1055,3 +1053,4 @@ a:focus {
   vertical-align: top;
   max-width: 100%;
 }
+* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */

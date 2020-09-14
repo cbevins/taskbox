@@ -1,8 +1,8 @@
 // src/components/Task.stories.js
 
-import Task from './Task.svelte';
-import { action } from '@storybook/addon-actions';
-import { withKnobs, object } from '@storybook/addon-knobs';
+import Task from './Task.svelte'
+import { action } from '@storybook/addon-actions'
+import { withKnobs, object } from '@storybook/addon-knobs'
 /*
 To tell Storybook about the component we are documenting,
 we create a default export that contains:
@@ -11,10 +11,10 @@ we create a default export that contains:
   excludeStories -- information required by the story, but should not be rendered by the Storybook app.
 */
 export default {
-  title: 'Task',
+  title: 'Storybook/Tutorial/Task',
   decorators: [withKnobs],
   excludeStories: /.*Data$/,
-};
+}
 
 /*
 Actions help you verify interactions when building UI components in isolation.
@@ -37,7 +37,7 @@ as we'll see later.
 export const actionsData = {
   onPinTask: action('onPinTask'),
   onArchiveTask: action('onArchiveTask'),
-};
+}
 
 /*
 When creating a story we use a base task (taskData) to build out the shape
@@ -50,7 +50,7 @@ export const taskData = {
   title: 'Test Task',
   state: 'Task_INBOX',
   updated_at: new Date(2019, 0, 1, 9, 0),
-};
+}
 
 /*
 To define our stories, we export a function for each of our test
@@ -68,7 +68,8 @@ export const Default = () => ({
   on: {
     ...actionsData,
   },
-});
+})
+
 // pinned task state
 export const Pinned = () => ({
   Component: Task,
@@ -81,7 +82,8 @@ export const Pinned = () => ({
   on: {
     ...actionsData,
   },
-});
+})
+
 // archived task state
 export const Archived = () => ({
   Component: Task,
@@ -94,7 +96,7 @@ export const Archived = () => ({
   on: {
     ...actionsData,
   },
-});
+})
 
 const longTitle = `This task's name is absurdly large. In fact, I think if I keep going I might end up with content overflow. What will happen? The star that represents a pinned task could have text overlapping. The text could cut-off abruptly when it reaches the star. I hope not!`;
 export const LongTitle = () => ({
@@ -105,4 +107,4 @@ export const LongTitle = () => ({
       title: longTitle,
     },
   },
-});
+})

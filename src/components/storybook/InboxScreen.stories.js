@@ -1,10 +1,9 @@
 // src/components/InboxScreen.stories.js
 
 import InboxScreen from './InboxScreen.svelte';
-import {defaultTaskData, withPinnedTasksData} from './PureTaskList.stories.js'
 
 export default {
-  title: 'PureInboxScreen',
+  title: 'Storybook/Tutorial/PureInboxScreen',
   Component: InboxScreen,
 };
 

@@ -2,7 +2,7 @@
 
 <script>
   import PureTaskList from './PureTaskList.svelte';
-  import { AppStore, taskStore } from '../store';
+  import { AppStore, taskStore } from './store.js';
   function onPinTask(event) {
     taskStore.pinTask(event.detail.id);
   }

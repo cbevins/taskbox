@@ -1,5 +1,5 @@
-// src/components/PureTaskList.stories.js
-import PureTaskList from './PureTaskList.svelte';
+// src/components/TaskList.stories.js
+import TaskList from './TaskList.svelte';
 
 /*
 taskData supplies the shape of a Task that we created and exported
@@ -9,7 +9,7 @@ that a Task component expects, which the TaskList also needs.
 */
 import { taskData, actionsData } from './Task.stories';
 export default {
-  title: 'PureTaskList',
+  title: 'Storybook/Tutorial/TaskList',
   excludeStories: /.*Data$/,
 };
 
@@ -28,7 +28,7 @@ export const withPinnedTasksData = [
 
 // default TaskList state
 export const Default = () => ({
-  Component: PureTaskList,
+  Component: TaskList,
   props: {
     tasks: defaultTasksData,
   },
@@ -38,7 +38,7 @@ export const Default = () => ({
 });
 // tasklist with pinned tasks
 export const WithPinnedTasks = () => ({
-  Component: PureTaskList,
+  Component: TaskList,
   props: {
     tasks: withPinnedTasksData,
   },
@@ -48,12 +48,12 @@ export const WithPinnedTasks = () => ({
 });
 // tasklist in loading state
 export const Loading = () => ({
-  Component: PureTaskList,
+  Component: TaskList,
   props: {
     loading: true,
   },
 });
 // tasklist no tasks
 export const Empty = () => ({
-  Component: PureTaskList,
+  Component: TaskList,
 });

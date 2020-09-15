@@ -38,14 +38,19 @@
   let bubble = {x: 0, y: 0}
 
   function atX(deg, origin, offset, fw=10, fa=0) {
-    const sin = Math.sin(deg * Math.PI / 180)
-    const p = origin + offset * sin
-    return p + fw * fa
+    return origin + offset * Math.sin(deg * Math.PI / 180) + fw * fa
   }
   function atY(deg, origin, offset, fw=10, fa=0) {
-    const cos = Math.cos(deg * Math.PI / 180)
-    const p = origin - offset * cos
-    return p + fw * fa
+    return origin - offset * Math.cos(deg * Math.PI / 180) + fw * fa
+  }
+
+  function xText(origin, offset, radians, factor) {
+    return origin + offset * Math.sin(radians)
+      - factor * (1-((1 + Math.sin(radians))/2))
+  }
+  function yText(origin, offset, radians, factor) {
+    return origin - offset * Math.cos(radians)
+      + factor * (1-((1 + Math.cos(radians))/2))
   }
 
   const points = [
@@ -59,6 +64,7 @@
     {deg: 315, text: 'NW', fx: -1.6, fy: 0},
   ]
   points.forEach(p => {
+    let rad = p.deg * Math.PI / 180
     p.x = atX(p.deg, compass.x, compass.r, compass.fw, p.fx)
     p.y = atY(p.deg, compass.y, compass.r, compass.fw, p.fy)
   })
@@ -71,20 +77,16 @@
 
     bubble.x = atX(aspect, compass.x, compass.r)
     bubble.y = atY(aspect, compass.x, compass.r)
-    bubble.xup = compass.x + (compass.r-7) * Math.sin(radians)
-      - 4 * (1-((1 + Math.sin(radians))/2))
-    bubble.yup = compass.y - (compass.r-7) * Math.cos(radians)
-      + 4 * (1-((1 + Math.cos(radians))/2))
+    bubble.xup = xText(compass.x, compass.r-7, radians, 4)
+    bubble.yup = yText(compass.y, compass.r-7, radians, 4)
     bubble.visible = (slope < 0.01) ? 'hidden' : 'visible'
 
     windFromNorth = $_input.windDirectionSourceFromNorth
     windHeading = (windFromNorth >= 180) ? windFromNorth-180 : windFromNorth+180
     windSpeed = $_input.windSpeedAtMidflame
     radians = windHeading * Math.PI / 180
-    wind.xup = compass.x + (compass.r-13) * Math.sin(radians)
-      - 4 * (1-((1 + Math.sin(radians))/2))
-    wind.yup = compass.y - (compass.r-13) * Math.cos(radians)
-      + 4 * (1-((1 + Math.cos(radians))/2))
+    wind.xup = xText(compass.x, compass.r-13, radians, 4)
+    wind.yup = yText(compass.y, compass.r-13, radians, 4)
     wind.visible = (windSpeed < 0.1) ? 'hidden' : 'visible'
   }
 </script>

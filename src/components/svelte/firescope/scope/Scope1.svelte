@@ -9,6 +9,10 @@
   let slope = $_input.slopeSteepnessRatio
   let upslope = (aspect >= 180) ? aspect-180 : aspect+180
   let radians
+  let windFromNorth = $_input.windDirectionSourceFromNorth
+  let windHeading = (windFromNorth >= 180) ? windFromNorth-180 : windFromNorth+180
+  let windSpeed = $_input.windSpeedAtMidflame
+  let wind = {visible: 'visible'}
 
   // viewport
   let vp = {x1: 0, y1: 0, w: 130, h: 130 }
@@ -64,13 +68,24 @@
     aspect = $_input.slopeDirectionAspect
     upslope = (aspect >= 180) ? aspect-180 : aspect+180
     radians = upslope * Math.PI / 180
+
     bubble.x = atX(aspect, compass.x, compass.r)
     bubble.y = atY(aspect, compass.x, compass.r)
-    bubble.xup = compass.x + compass.r * Math.sin(radians)
-      + 3 * (1 - ((1 + Math.sin(radians))/2) * 4)
-    bubble.yup = compass.y - compass.r * Math.cos(radians)
-      + 3 * (-1 + ((1 + Math.cos(radians))/2) * 3)
+    bubble.xup = compass.x + (compass.r-7) * Math.sin(radians)
+      - 4 * (1-((1 + Math.sin(radians))/2))
+    bubble.yup = compass.y - (compass.r-7) * Math.cos(radians)
+      + 4 * (1-((1 + Math.cos(radians))/2))
     bubble.visible = (slope < 0.01) ? 'hidden' : 'visible'
+
+    windFromNorth = $_input.windDirectionSourceFromNorth
+    windHeading = (windFromNorth >= 180) ? windFromNorth-180 : windFromNorth+180
+    windSpeed = $_input.windSpeedAtMidflame
+    radians = windHeading * Math.PI / 180
+    wind.xup = compass.x + (compass.r-13) * Math.sin(radians)
+      - 4 * (1-((1 + Math.sin(radians))/2))
+    wind.yup = compass.y - (compass.r-13) * Math.cos(radians)
+      + 4 * (1-((1 + Math.cos(radians))/2))
+    wind.visible = (windSpeed < 0.1) ? 'hidden' : 'visible'
   }
 </script>
 
@@ -99,8 +114,7 @@
     <symbol id='fireBox'>
       <line class='minor-line' x1={vp.x1} y1={vp.y1} x2={vp.x1} y2={vp.y2} />
       <text x="0" y="128"  class='info-text'>
-        asp={aspect} ({bubble.x.toFixed(0)},{bubble.y.toFixed(0)})
-        sin={Math.sin(radians).toFixed(4)} cos={Math.cos(radians).toFixed(4)}
+        wind is {wind.visible}
         </text>
       <text x="0" y="120" class='info-text'>FireScope 1.0.0</text>
     </symbol>
@@ -119,6 +133,33 @@
           style="visibility:{bubble.visible};" />
       </g>
     </symbol>
+
+    <symbol id='slopeBubbleText'>
+      <text x={bubble.xup} y={bubble.yup} class='major-text'
+        style="font: normal 4px sans-serif; visibility:{bubble.visible};">
+        {slope.toFixed(0)}</text>
+    </symbol>
+
+    <linearGradient id="windGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:rgb(200,200,240);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:blue;stop-opacity:1" />
+    </linearGradient>
+
+    <symbol id='windNeedle'>
+      <g transform='{center} rotate({windFromNorth})'>
+        <polygon class='wind-needle'
+          style="visibility:{wind.visible};"
+          fill="url(#windGradient)"
+          points="0,44 6,38, 4,38, 4,30, -4,30, -4,38, -6,38" />
+          <!-- points="0,42 6,-42 0,-36 -6,-42" /> -->
+      </g>
+    </symbol>
+
+    <symbol id='windNeedleText'>
+      <text x={wind.xup} y={wind.yup} class='major-text'
+        style="font: normal 4px sans-serif; visibility:{wind.visible};">
+          {windSpeed.toFixed(0)}</text>
+    </symbol>
   </defs>
 </svg>
 
@@ -126,10 +167,9 @@
   <svg viewBox="0, 0, 130, 130" width={width} height={height} >
     <use xlink:href="#fireCompass" transform='translate(5,5)'/>
     <use xlink:href="#slopeBubble" transform='translate(5,5)'/>
-    <text transform='translate(5,5)'
-      x={bubble.xup} y={bubble.yup} class='major-text'
-      style="font: normal 4px sans-serif; visibility:{bubble};">
-      {slope.toFixed(0)}</text>
+    <use xlink:href="#slopeBubbleText" transform='translate(5,5)'/>
+    <use xlink:href="#windNeedle" transform='translate(5,5)'/>
+    <use xlink:href="#windNeedleText" transform='translate(5,5)'/>
     <use xlink:href="#crossHairs" transform='translate(0,0)'/>
     <use xlink:href="#fireBox" transform='translate(0,0)'/>
   </svg>

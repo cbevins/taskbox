@@ -13,7 +13,7 @@
 </script>
 
 <!-- <FirescopeReels _output={_output} /> -->
-<FireScope1 width=400 height=400 _output={_output} _input={_input} />
+<FireScope1 width=300 height=300 _output={_output} _input={_input} />
 <table>
   <tr>
     <td><FirescopeDeadFuelMoisture _input={_input} _output={_output} /></td>

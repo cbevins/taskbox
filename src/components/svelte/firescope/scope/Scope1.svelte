@@ -67,9 +67,9 @@
     bubble.x = atX(aspect, compass.x, compass.r)
     bubble.y = atY(aspect, compass.x, compass.r)
     bubble.xup = compass.x + compass.r * Math.sin(radians)
-      + 3 * (1 - (1 + Math.sin(radians)) * 2)
+      + 3 * (1 - ((1 + Math.sin(radians))/2) * 4)
     bubble.yup = compass.y - compass.r * Math.cos(radians)
-      + 3 * (-1 + (1 + Math.cos(radians)) * 1.5)
+      + 3 * (-1 + ((1 + Math.cos(radians))/2) * 3)
     bubble.visible = (slope < 0.01) ? 'hidden' : 'visible'
   }
 </script>
@@ -129,7 +129,7 @@
     <text transform='translate(5,5)'
       x={bubble.xup} y={bubble.yup} class='major-text'
       style="font: normal 4px sans-serif; visibility:{bubble};">
-      123</text>
+      {slope.toFixed(0)}</text>
     <use xlink:href="#crossHairs" transform='translate(0,0)'/>
     <use xlink:href="#fireBox" transform='translate(0,0)'/>
   </svg>

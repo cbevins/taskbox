@@ -6,13 +6,14 @@
   import FirescopeWindSpeedDirection from '../sliders/FirescopeWindSpeedDirection.svelte'
   import FirescopeReels from '../output/Reels.svelte'
   import FireScope from '../scope/Scope.svelte'
+  import FireScope1 from '../scope/Scope1.svelte'
 
   export let _input
   export let _output
 </script>
 
-<FirescopeReels _output={_output} />
-<FireScope width=400 height=400 _output={_output} _input={_input} />
+<!-- <FirescopeReels _output={_output} /> -->
+<FireScope1 width=400 height=400 _output={_output} _input={_input} />
 <table>
   <tr>
     <td><FirescopeDeadFuelMoisture _input={_input} _output={_output} /></td>

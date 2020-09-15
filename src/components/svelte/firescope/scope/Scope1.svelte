@@ -8,7 +8,6 @@
   let aspect = $_input.slopeDirectionAspect
   let slope = $_input.slopeSteepnessRatio
   let upslope = (aspect >= 180) ? aspect-180 : aspect+180
-  let radians
   let windFromNorth = $_input.windDirectionSourceFromNorth
   let windHeading = (windFromNorth >= 180) ? windFromNorth-180 : windFromNorth+180
   let windSpeed = $_input.windSpeedAtMidflame
@@ -26,67 +25,56 @@
   // compass has radius 50 plus margins of 10 for letters
   let compass = {
     r: 50, // compass dial radius
-    x: 60,  // compass center x
-    y: 60,  // compass center y
+    x: 65,  // compass center x
+    y: 65,  // compass center y
     fw: 10, // compass font 'W' width
     major: 10, // major tic length
     minor: 5  // minor tic length
   }
   const center = `translate(${compass.x},${compass.y})`
+  const viewbox = "0, 0, 130, 130"
+  const compassPos = `translate(5,5)`
 
   // Slope bubble center location
   let bubble = {x: 0, y: 0}
 
-  function atX(deg, origin, offset, fw=10, fa=0) {
-    return origin + offset * Math.sin(deg * Math.PI / 180) + fw * fa
+  function atX(origin, offset, deg) {
+    return origin + offset * Math.sin(deg * Math.PI / 180)
   }
-  function atY(deg, origin, offset, fw=10, fa=0) {
-    return origin - offset * Math.cos(deg * Math.PI / 180) + fw * fa
+  function atY(origin, offset, deg) {
+    return origin - offset * Math.cos(deg * Math.PI / 180)
   }
-
-  function xText(origin, offset, radians, factor) {
-    return origin + offset * Math.sin(radians)
-      - factor * (1-((1 + Math.sin(radians))/2))
-  }
-  function yText(origin, offset, radians, factor) {
-    return origin - offset * Math.cos(radians)
-      + factor * (1-((1 + Math.cos(radians))/2))
-  }
-
   const points = [
-    {deg: 0, text: 'N', fx: -.4, fy: -0.1},
-    {deg: 45, text: 'NE', fx: 0, fy: 0},
-    {deg: 90, text: 'E', fx: 0.1, fy: 0.4},
-    {deg: 135, text: 'SE', fx: 0, fy: 0.77},
-    {deg: 180, text: 'S', fx: -.4, fy: 1},
-    {deg: 225, text: 'SW', fx: -1.6, fy: 0.77},
-    {deg: 270, text: 'W', fx: -1, fy: 0.4},
-    {deg: 315, text: 'NW', fx: -1.6, fy: 0},
+    {deg: 0, text: 'N'},
+    {deg: 45, text: 'NE'},
+    {deg: 90, text: 'E'},
+    {deg: 135, text: 'SE'},
+    {deg: 180, text: 'S'},
+    {deg: 225, text: 'SW'},
+    {deg: 270, text: 'W'},
+    {deg: 315, text: 'NW'}
   ]
   points.forEach(p => {
-    let rad = p.deg * Math.PI / 180
-    p.x = atX(p.deg, compass.x, compass.r, compass.fw, p.fx)
-    p.y = atY(p.deg, compass.y, compass.r, compass.fw, p.fy)
+    p.x = atX(compass.x, compass.r+7, p.deg)
+    p.y = atY(compass.y, compass.r+7, p.deg)
   })
 
   $: {
     slope = $_input.slopeSteepnessRatio
     aspect = $_input.slopeDirectionAspect
     upslope = (aspect >= 180) ? aspect-180 : aspect+180
-    radians = upslope * Math.PI / 180
 
-    bubble.x = atX(aspect, compass.x, compass.r)
-    bubble.y = atY(aspect, compass.x, compass.r)
-    bubble.xup = xText(compass.x, compass.r-7, radians, 4)
-    bubble.yup = yText(compass.y, compass.r-7, radians, 4)
+    bubble.x = atX(compass.x, compass.r, aspect)
+    bubble.y = atY(compass.x, compass.r, aspect)
+    bubble.xup = atX(compass.x, compass.r-5, upslope)
+    bubble.yup = atY(compass.y, compass.r-5, upslope)
     bubble.visible = (slope < 0.01) ? 'hidden' : 'visible'
 
     windFromNorth = $_input.windDirectionSourceFromNorth
     windHeading = (windFromNorth >= 180) ? windFromNorth-180 : windFromNorth+180
     windSpeed = $_input.windSpeedAtMidflame
-    radians = windHeading * Math.PI / 180
-    wind.xup = xText(compass.x, compass.r-13, radians, 4)
-    wind.yup = yText(compass.y, compass.r-13, radians, 4)
+    wind.xup = atX(compass.x, compass.r-12, windHeading)
+    wind.yup = atY(compass.y, compass.r-12, windHeading)
     wind.visible = (windSpeed < 0.1) ? 'hidden' : 'visible'
   }
 </script>
@@ -100,7 +88,8 @@
       <!-- markers -->
       {#each points as p}
         <line	class='major-line' y1={compass.r-15} y2={compass.r}	transform='{center} rotate({p.deg})'/>
-        <text class='major-text' x={p.x} y={p.y}>{p.text}</text>
+        <text class='major-text' dominant-baseline="middle" text-anchor="middle"
+          x={p.x} y={p.y}>{p.text}</text>
         <line	class='minor-line' y1={compass.r-10} y2={compass.r}	transform='{center} rotate({p.deg+15})'/>
         <line	class='minor-line' y1={compass.r-10} y2={compass.r}	transform='{center} rotate({p.deg+30})'/>
       {/each}
@@ -116,8 +105,7 @@
     <symbol id='fireBox'>
       <line class='minor-line' x1={vp.x1} y1={vp.y1} x2={vp.x1} y2={vp.y2} />
       <text x="0" y="128"  class='info-text'>
-        wind is {wind.visible}
-        </text>
+      </text>
       <text x="0" y="120" class='info-text'>FireScope 1.0.0</text>
     </symbol>
 
@@ -138,7 +126,8 @@
 
     <symbol id='slopeBubbleText'>
       <text x={bubble.xup} y={bubble.yup} class='major-text'
-        style="font: normal 4px sans-serif; visibility:{bubble.visible};">
+        dominant-baseline="middle" text-anchor="middle"
+        style="font: normal 6px sans-serif; visibility:{bubble.visible};">
         {slope.toFixed(0)}</text>
     </symbol>
 
@@ -159,20 +148,20 @@
 
     <symbol id='windNeedleText'>
       <text x={wind.xup} y={wind.yup} class='major-text'
-        style="font: normal 4px sans-serif; visibility:{wind.visible};">
+        dominant-baseline="middle" text-anchor="middle"
+        style="font: normal 6px sans-serif; visibility:{wind.visible};">
           {windSpeed.toFixed(0)}</text>
     </symbol>
   </defs>
 </svg>
 
 <div class="firescope-box">
-  <svg viewBox="0, 0, 130, 130" width={width} height={height} >
-    <use xlink:href="#fireCompass" transform='translate(5,5)'/>
-    <use xlink:href="#slopeBubble" transform='translate(5,5)'/>
-    <use xlink:href="#slopeBubbleText" transform='translate(5,5)'/>
-    <use xlink:href="#windNeedle" transform='translate(5,5)'/>
-    <use xlink:href="#windNeedleText" transform='translate(5,5)'/>
-    <use xlink:href="#crossHairs" transform='translate(0,0)'/>
+  <svg viewBox={viewbox} width={width} height={height} >
+    <use xlink:href="#fireCompass" transform={compassPos}/>
+    <use xlink:href="#slopeBubble" transform={compassPos}/>
+    <use xlink:href="#slopeBubbleText" transform={compassPos}/>
+    <use xlink:href="#windNeedle" transform={compassPos}/>
+    <use xlink:href="#windNeedleText" transform={compassPos}/>
     <use xlink:href="#fireBox" transform='translate(0,0)'/>
   </svg>
 </div>
@@ -198,7 +187,7 @@
 		stroke-width: 1;
 	}
   .major-text {
-    font: bold 10px sans-serif;
+    font: bold 8px sans-serif;
   }
 	.minor-line {
 		stroke: #999;

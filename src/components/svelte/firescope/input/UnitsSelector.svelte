@@ -4,7 +4,7 @@
     { u: 'e', text: 'English'},
     { u: 'm', text: 'Metric'},
     { u: 'f', text: 'US Forestry'},
-    { u: 'b', text: 'Model base units'}
+    { u: 'b', text: 'Model Native'}
   ]
 </script>
 

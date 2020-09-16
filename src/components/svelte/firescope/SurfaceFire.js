@@ -87,7 +87,10 @@ export class SurfaceFire {
     this.dag.setSelected(Output.map(out => [out.n, true]))
 
     // The following inputs are required for the selected Nodes
-    this.input = {dag: this.dag} // included for easy access by components from the _input prop
+    this.input = {
+      dag: this.dag, // included for easy access by components from the _input prop
+      uom: 'e' // display units-of-measure set: 'b', 'e', 'f', 'm'
+    }
     Input.forEach(inp => {this.input[inp.k] = inp.v})
     this.run()
   }
@@ -110,7 +113,7 @@ export class SurfaceFire {
       const m = (out.u === none ) ? b : node.variant.baseAsUom(b, out.u.m)
       const v = {b: b, e: e, f: f, m: m}
       const u = out.u
-      this.output[out.k] = e
+      this.output[out.k] = {v: v, u: u}
     })
     // Return this.output so run() can be used inside the Svelte derived store
     return this.output

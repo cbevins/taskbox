@@ -12,6 +12,7 @@
   let windHeading = (windFromNorth >= 180) ? windFromNorth-180 : windFromNorth+180
   let windSpeed = $_input.windSpeedAtMidflame
   let wind = {visible: 'visible'}
+  let uom = $_input.uom
 
   // viewport
   let vp = {x1: 0, y1: 0, w: 130, h: 130 }
@@ -60,6 +61,7 @@
   })
 
   $: {
+    uom = $_input.uom
     slope = $_input.slopeSteepnessRatio
     aspect = $_input.slopeDirectionAspect
     upslope = (aspect >= 180) ? aspect-180 : aspect+180
@@ -105,7 +107,8 @@
     <symbol id='fireBox'>
       <line class='minor-line' x1={vp.x1} y1={vp.y1} x2={vp.x1} y2={vp.y2} />
       <text x="0" y="128"  class='info-text'>
-        Head Spread Rate {$_output.spreadRate.toFixed(2)}
+        Head Spread Rate {$_output.spreadRate.v[uom].toFixed(2)}
+        {$_output.spreadRate.u[uom]}
       </text>
       <text x="0" y="120" class='info-text'>FireScope 1.0.0</text>
     </symbol>

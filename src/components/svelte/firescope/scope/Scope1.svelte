@@ -20,7 +20,7 @@
   vp.x2 = vp.x1 + vp.w
   vp.y2 = vp.y1 + vp.h
   const vpCenter = `translate(${vp.xc}, ${vp.yc})`
-  console.log(vp)
+  // console.log(vp)
 
   // compass has radius 50 plus margins of 10 for letters
   let compass = {

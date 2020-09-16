@@ -39,30 +39,43 @@ export const Input = [
   {n:'site.fire.time.sinceIgnition', k: 'timeSinceIgnition', v: 1, f: 60} // input hour to min
 ]
 
+// Output units-of-measure
+const compass = {b: 'deg', e: 'deg', f: 'deg', m: 'deg'}
+const dist = {b: 'ft', e: 'ft', f: 'ft', m: 'm'}
+const distCh = {b: 'ft', e: 'ft', f: 'ch', m: 'm'}
+const fraction = {b: 'ratio', e: 'percent', f: 'percent', m: 'percent'}
+const flame = {b: 'ft', e: 'ft', f: 'ft', m: 'm'}
+const fli = {b: 'btu/ft/s', e: 'btu/ft/s', f: 'btu/ft/s', m: 'J/m/s'}
+const hpua = {b: 'btu/ft2', e: 'btu/ft2', f: 'btu/ft2', m: 'J/m2'}
+const none = {b: null, e: null, f: null, m: null}
+const ros = {b: 'ft/min', e: 'ft/min',  f: 'ch/h', m: 'm/min'}
+const rxi = {b: 'btu/ft2/min', e: 'btu/ft2/min', f: 'btu/ft2/min', m: 'J/m2/min'}
+const scorch = {b: 'ft', e: 'ft', f: 'ft', m: 'm'}
+
 /**
  * n: Dag Node key
  * k: this.output[k]
  */
 export const Output = [
-  {n: 'surface.weighted.fire.firelineIntensity', k: 'firelineIntensity'},
-  {n: 'surface.weighted.fire.flameLength', k: 'flameLength'},
-  {n: 'surface.weighted.fire.heading.fromNorth', k: 'fireHeadingFromNorth'},
-  {n: 'surface.weighted.fire.heading.fromUpslope', k: 'fireHeadingFromUpslope'},
-  {n: 'surface.weighted.fire.heatPerUnitArea', k: 'heatPerUnitArea'},
-  {n: 'surface.weighted.fire.lengthToWidthRatio', k: 'lengthToWidthRatio'},
-  {n: 'surface.weighted.fire.reactionIntensity', k: 'reactionIntensity'},
-  {n: 'surface.weighted.fire.scorchHeight', k: 'scorchHeight'},
-  {n: 'surface.weighted.fire.spreadRate', k: 'spreadRate'},
-  {n: 'surface.primary.fuel.model.behave.parms.cured.herb.fraction', k: 'curedHerbFraction'},
-  {n: 'surface.fire.ellipse.back.flameLength', k: 'backingFlameLength'},
-  {n: 'surface.fire.ellipse.back.scorchHeight', k: 'backingScorchHeight'},
-  {n: 'surface.fire.ellipse.back.spreadRate', k: 'backingSpreadRate'},
-  {n: 'surface.fire.ellipse.flank.flameLength', k: 'flankingFlameLength'},
-  {n: 'surface.fire.ellipse.flank.scorchHeight', k: 'flankingScorchHeight'},
-  {n: 'surface.fire.ellipse.flank.spreadRate', k: 'flankingSpreadRate'},
-  {n: 'surface.fire.ellipse.head.flameLength', k: 'headingFlameLength'},
-  {n: 'surface.fire.ellipse.head.scorchHeight', k: 'headingScorchHeight'},
-  {n: 'surface.fire.ellipse.head.spreadRate', k: 'headingSpreadRate'}
+  {n: 'surface.weighted.fire.firelineIntensity', k: 'firelineIntensity', u: fli},
+  {n: 'surface.weighted.fire.flameLength', k: 'flameLength', u: flame},
+  {n: 'surface.weighted.fire.heading.fromNorth', k: 'fireHeadingFromNorth', u: compass},
+  {n: 'surface.weighted.fire.heading.fromUpslope', k: 'fireHeadingFromUpslope', u: compass},
+  {n: 'surface.weighted.fire.heatPerUnitArea', k: 'heatPerUnitArea', u: hpua},
+  {n: 'surface.weighted.fire.lengthToWidthRatio', k: 'lengthToWidthRatio', u: none},
+  {n: 'surface.weighted.fire.reactionIntensity', k: 'reactionIntensity', u: rxi},
+  {n: 'surface.weighted.fire.scorchHeight', k: 'scorchHeight', u: scorch},
+  {n: 'surface.weighted.fire.spreadRate', k: 'spreadRate', u: ros},
+  {n: 'surface.primary.fuel.model.behave.parms.cured.herb.fraction', k: 'curedHerbFraction', u: fraction},
+  {n: 'surface.fire.ellipse.back.flameLength', k: 'backingFlameLength', u: flame},
+  {n: 'surface.fire.ellipse.back.scorchHeight', k: 'backingScorchHeight', u: scorch},
+  {n: 'surface.fire.ellipse.back.spreadRate', k: 'backingSpreadRate', u: ros},
+  {n: 'surface.fire.ellipse.flank.flameLength', k: 'flankingFlameLength', u: flame},
+  {n: 'surface.fire.ellipse.flank.scorchHeight', k: 'flankingScorchHeight', u: scorch},
+  {n: 'surface.fire.ellipse.flank.spreadRate', k: 'flankingSpreadRate', u: ros},
+  {n: 'surface.fire.ellipse.head.flameLength', k: 'headingFlameLength', u: flame},
+  {n: 'surface.fire.ellipse.head.scorchHeight', k: 'headingScorchHeight', u: scorch},
+  {n: 'surface.fire.ellipse.head.spreadRate', k: 'headingSpreadRate', u: ros}
 ]
 
 export class SurfaceFire {
@@ -90,7 +103,14 @@ export class SurfaceFire {
     // Retrieve selected Nodes into this.output object
     this.output = {dag: this.dag}
     Output.forEach(out => {
-      this.output[out.k] = this.dag.get(out.n).value
+      const node = this.dag.get(out.n)
+      const b = node.value
+      const e = (out.u === none ) ? b : node.variant.baseAsUom(b, out.u.e)
+      const f = (out.u === none ) ? b : node.variant.baseAsUom(b, out.u.f)
+      const m = (out.u === none ) ? b : node.variant.baseAsUom(b, out.u.m)
+      const v = {b: b, e: e, f: f, m: m}
+      const u = out.u
+      this.output[out.k] = e
     })
     // Return this.output so run() can be used inside the Svelte derived store
     return this.output

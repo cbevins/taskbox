@@ -28,19 +28,23 @@
     return Dir[idx]
   }
   function handleCompass() {
-    direction = compassDirection(windFrom)
+    direction = compassDirection(from)
   }
 </script>
 
 <div class="control-wrapper">
   <div class="row">
-      <p class="wind-title">Wind</p>
+      <p class="wind-title">Wind at</p>
   </div>
   <div class="row">
     <div class="wind-slider">
-      <p class="wind-label">Speed</p>
-      <p class="wind-value">mph</p>
-      <p class="wind-value">{speed.toFixed(0)}</p>
+      <p class="wind-label">Midflm</p>
+      <p class="wind-value">{speed.toFixed(0)}
+        <span class='units-text'>mph</span>
+      </p>
+      <p class="wind-value">{(1.60934*speed).toFixed(0)}
+        <span class='units-text'>kph</span>
+      </p>
       <div class="vertical-slider-wrapper">
         <input bind:value={speed} type="range" min="0" max="40" step="1" />
       </div>
@@ -48,11 +52,11 @@
 
     <div class="wind-slider">
       <p class="wind-label">From</p>
-      <p class="wind-value">{direction}</p>
       <p class="wind-value">{from}&#x00B0;</p>
+      <p class="wind-value">{direction}</p>
       <div class="vertical-slider-wrapper">
         <input bind:value={from} type="range" min="0" max="359" step="1"
-        on:input={handleCompass}>
+          on:input={handleCompass}>
       </div>
     </div>
   </div>
@@ -68,10 +72,18 @@
   display: table;
 }
 .control-wrapper {
-  width: 80px;
+  width: 90px;
   height: 220px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.48);
+}
+.units-text {
+  font-family: "Lucida Sans", sans-serif;
+  font-size: 6px;
+  text-align: left;
+  color: green;
+  padding: 0;
+  margin: 0px;
 }
 .wind-label {
   font-family: "Lucida Sans", sans-serif;
@@ -97,7 +109,7 @@
 .wind-slider {
   font-family: "Lucida Sans", sans-serif;
   font-size: 12px;
-  width: 40px;
+  width: 45px;
   height: 220px;
   padding-left: 5px;
   padding-right: 5px;

@@ -87,15 +87,15 @@
         <ellipse cx="0" cy="0" rx={rx} ry="40" fill="url(#fireGradient)" />
         <text style="font: normal 4px sans-serif;"
             transform='rotate(90 -16,15)'>
-            {$_output.head.spreadRate.toFixed(2)}
+            {$_output.headingSpreadRate.toFixed(2)}
           </text>
         <text x="-70" style="font: normal 4px sans-serif;"
             transform='rotate(90 -16,15)'>
-          {$_output.back.spreadRate.toFixed(2)}
+          {$_output.backingSpreadRate.toFixed(2)}
           </text>
         <text x="-35" y={-35/$_output.lengthToWidthRatio} style="font: normal 4px sans-serif;"
             transform='rotate(90 -16,15)'>
-          {$_output.flank.spreadRate.toFixed(2)}
+          {$_output.flankingSpreadRate.toFixed(2)}
           </text>
       </g>
     </symbol>

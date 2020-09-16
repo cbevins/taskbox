@@ -3,7 +3,7 @@
   export let width
   export let height
   export let _input
-  // export let _output
+  export let _output
 
   let aspect = $_input.slopeDirectionAspect
   let slope = $_input.slopeSteepnessRatio
@@ -105,6 +105,7 @@
     <symbol id='fireBox'>
       <line class='minor-line' x1={vp.x1} y1={vp.y1} x2={vp.x1} y2={vp.y2} />
       <text x="0" y="128"  class='info-text'>
+        Head Spread Rate {$_output.spreadRate.toFixed(2)}
       </text>
       <text x="0" y="120" class='info-text'>FireScope 1.0.0</text>
     </symbol>

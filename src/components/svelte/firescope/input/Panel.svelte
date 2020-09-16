@@ -13,9 +13,13 @@
   export let _output
 </script>
 
-<!-- <FirescopeReels _output={_output} /> -->
 <FireScope1 width=300 height=300 _output={_output} _input={_input} />
 <table>
+  <tr>
+    <td colspan='6'>
+      <FirescopeReels _output={_output} _input={_input}/>
+    </td>
+  </tr>
   <tr>
     <td><FirescopeDeadFuelMoisture _input={_input} _output={_output} /></td>
     <td><FirescopeLiveFuelMoisture _input={_input} _output={_output} /></td>

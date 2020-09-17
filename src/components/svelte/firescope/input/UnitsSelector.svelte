@@ -4,11 +4,11 @@
     { u: 'e', text: 'English'},
     { u: 'm', text: 'Metric'},
     { u: 'f', text: 'US Forestry'},
-    { u: 'b', text: 'Model Native'}
+    { u: 'b', text: 'Native Units'}
   ]
 </script>
 
-<select bind:value={$_input.uom}>
+<select class='select-css' bind:value={$_input.uom}>
 	{#each uoms as uom}
 		<option value={uom.u}>
 			{uom.text}

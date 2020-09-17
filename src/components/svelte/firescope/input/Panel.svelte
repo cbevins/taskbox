@@ -1,4 +1,5 @@
 <script>
+  import BehaviorSelector from './BehaviorSelector.svelte'
   import FirescopeAirTemperature from '../sliders/FirescopeAirTemperature.svelte'
   import FirescopeDeadFuelMoisture from '../sliders/FirescopeDeadFuelMoisture.svelte'
   import FirescopeLiveFuelMoisture from '../sliders/FirescopeLiveFuelMoisture.svelte'
@@ -13,20 +14,19 @@
   export let _output
 </script>
 
-<FireScope width=300 height=300 _output={_output} _input={_input} />
+<FireScope width=300 height=300 _output={_output} _input={_input}/>
 <table>
-  <!-- <tr><td colspan='6'><FirescopeReels _output={_output} _input={_input}/></td> -->
+  <tr><td colspan='6'><FirescopeReels _output={_output} _input={_input}/></td>
+  <tr>
+    <td colspan='3'><FuelSelector _output={_output} _input={_input}/></td>
+    <td><UnitsSelector _input={_input} _output={_output} /></td>
+    <td><BehaviorSelector _input={_input} _output={_output} /></td>
+  </tr>
   <tr>
     <td><FirescopeDeadFuelMoisture _input={_input} _output={_output} /></td>
     <td><FirescopeLiveFuelMoisture _input={_input} _output={_output} /></td>
     <td><FirescopeSlopeAspect _input={_input} _output={_output} /></td>
     <td><FirescopeWindSpeedDirection _input={_input} _output={_output} /></td>
     <td><FirescopeAirTemperature _input={_input} _output={_output} /></td>
-    <td valign='top'>
-    </td>
   </tr>
-  <tr><td colspan='6'>
-    <FuelSelector _output={_output} _input={_input}/>
-      <UnitsSelector _input={_input} _output={_output} />
-    </td></tr>
 </table>

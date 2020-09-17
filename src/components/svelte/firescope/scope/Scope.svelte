@@ -14,6 +14,7 @@
   function opposite(deg) { return deg >= 180 ? deg-180 : deg+180 }
 
   let aspect = $_input.slopeDirectionAspect
+  let ellipseValue = $_input.behavior
   let fireHeadingFromNorth = $_output.fireHeadingFromNorth.v.b
   let fireBackingFromNorth = opposite(fireHeadingFromNorth)
   let slope = $_input.slopeSteepnessRatio
@@ -23,7 +24,6 @@
   let windSpeed = $_input.windSpeedAtMidflame
   let wind = {visible: 'visible'}
   let uom = $_input.uom
-  let ellipseValue = 'ros'
   let headingValue, flankingValue, backingValue
 
   // viewport
@@ -100,15 +100,16 @@
     fire.flank.y = atY(compass.y, fire.width, fire.flank.deg),
     fire.flank0 = {x: -fire.r, y: width}
 
-    if (ellipseValue === 'ros') {
+    let ellipseValue = $_input.behavior
+    if (ellipseValue === 'spreadRate') {
       headingValue = $_output.headingSpreadRate.v[uom].toFixed(0)
       backingValue = $_output.backingSpreadRate.v[uom].toFixed(0)
       flankingValue = $_output.flankingSpreadRate.v[uom].toFixed(0)
-    } else if (ellipseValue === 'flame') {
+    } else if (ellipseValue === 'flameLength') {
       headingValue = $_output.headingFlameLength.v[uom].toFixed(0)
       backingValue = $_output.backingFlameLength.v[uom].toFixed(0)
-      flankingValue = $_output.flankingFlameLeng.v[uom].toFixed(0)
-    } else if (ellipseValue === 'scorch') {
+      flankingValue = $_output.flankingFlameLength.v[uom].toFixed(0)
+    } else if (ellipseValue === 'scorchHeight') {
       headingValue = $_output.headingScorchHeight.v[uom].toFixed(0)
       backingValue = $_output.backingScorchHeight.v[uom].toFixed(0)
       flankingValue = $_output.flankingScorchHeight.v[uom].toFixed(0)
@@ -265,12 +266,4 @@
 		stroke: #f00;
 		stroke-width: 0.5;
 	}
- 	span {
-		padding: 0 0 0 1.5em;
-		background: url(favicon.sem.png) 0 0.1em no-repeat;
-		background-size: 1em 1em;
-		font-weight: bold;
-		cursor: pointer;
-	}
-
 </style>

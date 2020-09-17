@@ -132,13 +132,6 @@
       {/each}
     </symbol>
 
-    <symbol id='crossHairs'>
-      <line class='cross-hairs' x1={vp.x1} y1={vp.yc} x2={vp.x2} y2={vp.yc}/>
-      <line class='cross-hairs' x1={vp.xc} y1={vp.y1} x2={vp.xc} y2={vp.y2}/>
-      <text class='major-text' transform='{vpCenter} rotate({aspect}) translate(-5,5)'>
-        W</text>
-    </symbol>
-
     <symbol id='fireBox'>
       <line class='minor-line' x1={vp.x1} y1={vp.y1} x2={vp.x1} y2={vp.y2} />
       <text x="0" y="128"  class='info-text'>
@@ -146,6 +139,7 @@
         {$_output.spreadRate.u[uom]}
       </text>
       <text x="0" y="120" class='info-text'>FireScope 1.0.0</text>
+      <image x="0" y="0" href="images/SEMfavicon.png" height="12" width="12"/>
     </symbol>
 
     <linearGradient id="fireGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -253,10 +247,6 @@
   .compass-text {
     font: normal 6px sans-serif;
   }
-	.cross-hairs {
-		stroke: red;
-		stroke-width: 0.25;
-	}
   .info-text {
     font: normal 4px sans-serif;
   }
@@ -275,4 +265,12 @@
 		stroke: #f00;
 		stroke-width: 0.5;
 	}
+ 	span {
+		padding: 0 0 0 1.5em;
+		background: url(favicon.sem.png) 0 0.1em no-repeat;
+		background-size: 1em 1em;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
 </style>

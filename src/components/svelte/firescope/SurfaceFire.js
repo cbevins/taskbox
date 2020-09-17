@@ -89,7 +89,8 @@ export class SurfaceFire {
     // The following inputs are required for the selected Nodes
     this.input = {
       dag: this.dag, // included for easy access by components from the _input prop
-      uom: 'e' // display units-of-measure set: 'b', 'e', 'f', 'm'
+      uom: 'e', // display units-of-measure set: 'b', 'e', 'f', 'm'
+      behavior: 'spreadRate' // variable shown on fire ellipse
     }
     Input.forEach(inp => {this.input[inp.k] = inp.v})
     this.run()

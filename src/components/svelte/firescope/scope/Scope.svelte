@@ -5,117 +5,239 @@
   export let _input
   export let _output
 
-  let points = [
-    {deg: 270, text: 'N', x: 56, y: 10, cls: 'compass-text-major'},
-    {deg: 315, text: 'NE', x: 94, y: 25, cls: 'compass-text-minor'},
-    {deg: 0, text: 'E', x: 110, y: 63, cls: 'compass-text-major'},
-    {deg: 45, text: 'SE', x: 94, y: 102, cls: 'compass-text-minor'},
-    {deg: 90, text: 'S', x: 56, y: 117, cls: 'compass-text-major'},
-    {deg: 135, text: 'SW', x: 12, y: 102, cls: 'compass-text-minor'},
-    {deg: 180, text: 'W', x: 0, y: 63, cls: 'compass-text-major'},
-    {deg: 225, text: 'NW', x: 12, y: 25, cls: 'compass-text-minor'},
-  ]
+  function atX(origin, offset, deg) {
+    return origin + offset * Math.sin(deg * Math.PI / 180)
+  }
+  function atY(origin, offset, deg) {
+    return origin - offset * Math.cos(deg * Math.PI / 180)
+  }
+  function opposite(deg) { return deg >= 180 ? deg-180 : deg+180 }
 
-  let bubble = 'hidden'
-  let wind = 'hidden'
-  let rx, xBubble, yBubble, aspSin, aspCos
-  let center = {x: 60, y: 60}
+  let aspect = $_input.slopeDirectionAspect
+  let fireHeadingFromNorth = $_output.fireHeadingFromNorth.v.b
+  let fireBackingFromNorth = opposite(fireHeadingFromNorth)
+  let slope = $_input.slopeSteepnessRatio
+  let upslope = opposite(aspect)
+  let windFromNorth = $_input.windDirectionSourceFromNorth
+  let windHeading = opposite(windFromNorth)
+  let windSpeed = $_input.windSpeedAtMidflame
+  let wind = {visible: 'visible'}
+  let uom = $_input.uom
+  let ellipseValue = 'ros'
+  let headingValue, flankingValue, backingValue
+
+  // viewport
+  const viewbox = "0, 0, 130, 130"
+  let vp = {x1: 0, y1: 0, w: 130, h: 130 }
+  vp.xc = (vp.x1 + vp.w/2)
+  vp.yc = (vp.y1 + vp.h/2)
+  vp.x2 = vp.x1 + vp.w
+  vp.y2 = vp.y1 + vp.h
+  const vpCenter = `translate(${vp.xc}, ${vp.yc})`
+
+  // compass has radius 50 plus margins of 10 for letters
+  let compass = {
+    r: 50, // compass dial radius
+    x: 65,  // compass center x
+    y: 65,  // compass center y
+    fw: 10, // compass font 'W' width
+    major: 10, // major tic length
+    minor: 5  // minor tic length
+  }
+  const center = `translate(${compass.x},${compass.y})`
+  const compassPos = `translate(5,5)`
+  const points = [
+    {deg: 0, text: 'N'},
+    {deg: 45, text: 'NE'},
+    {deg: 90, text: 'E'},
+    {deg: 135, text: 'SE'},
+    {deg: 180, text: 'S'},
+    {deg: 225, text: 'SW'},
+    {deg: 270, text: 'W'},
+    {deg: 315, text: 'NW'}
+  ]
+  points.forEach(p => {
+    p.x = atX(compass.x, compass.r+7, p.deg)
+    p.y = atY(compass.y, compass.r+7, p.deg)
+  })
+
+  // Slope bubble center location
+  let bubble = {x: 0, y: 0}
+  let fire = {x: 0, r: 35}
+
   $: {
-    rx = 40 / $_output.lengthToWidthRatio
-    bubble = ($_input.slopeSteepnessRatio < 0.01) ? 'hidden' : 'visible'
-    wind = ($_input.windSpeedAtMidflame < 1) ? 'hidden' : 'visible'
-    // Slope bubble center location
-    aspSin = Math.sin($_input.slopeDirectionAspect * Math.PI / 180)
-    aspCos = Math.cos($_input.slopeDirectionAspect * Math.PI / 180)
-    xBubble = 60 - 60 * aspSin
-    yBubble = 60 + 60 * aspCos
+    uom = $_input.uom
+    slope = $_input.slopeSteepnessRatio
+    aspect = $_input.slopeDirectionAspect
+    upslope = opposite(aspect)
+
+    bubble.xup = atX(compass.x, compass.r-5, upslope)
+    bubble.yup = atY(compass.y, compass.r-5, upslope)
+    bubble.visible = (slope < 0.01) ? 'hidden' : 'visible'
+
+    windFromNorth = $_input.windDirectionSourceFromNorth
+    windHeading = opposite(windFromNorth)
+    windSpeed = $_input.windSpeedAtMidflame
+    wind.xup = atX(compass.x, compass.r-12, windHeading)
+    wind.yup = atY(compass.y, compass.r-12, windHeading)
+    wind.visible = (windSpeed < 0.1) ? 'hidden' : 'visible'
+
+    fireHeadingFromNorth = $_output.fireHeadingFromNorth.v.b
+    fireBackingFromNorth = opposite(fireHeadingFromNorth)
+    fire.x = fire.r / $_output.lengthToWidthRatio.v.b
+    fire.head = {
+      x: atX(compass.x, compass.r-20, fireHeadingFromNorth),
+      y: atY(compass.y, compass.r-20, fireHeadingFromNorth)
+    }
+    fire.back = {
+      x: atX(compass.x, compass.r-20, fireBackingFromNorth),
+      y: atY(compass.y, compass.r-20, fireBackingFromNorth)
+    }
+    fire.lwr = $_output.lengthToWidthRatio.v.b
+    fire.width = -fire.r / fire.lwr
+    fire.flank = {deg: (fireHeadingFromNorth+90)}
+    fire.flank.x = atX(compass.x, fire.width, fire.flank.deg),
+    fire.flank.y = atY(compass.y, fire.width, fire.flank.deg),
+    fire.flank0 = {x: -fire.r, y: width}
+
+    if (ellipseValue === 'ros') {
+      headingValue = $_output.headingSpreadRate.v[uom].toFixed(0)
+      backingValue = $_output.backingSpreadRate.v[uom].toFixed(0)
+      flankingValue = $_output.flankingSpreadRate.v[uom].toFixed(0)
+    } else if (ellipseValue === 'flame') {
+      headingValue = $_output.headingFlameLength.v[uom].toFixed(0)
+      backingValue = $_output.backingFlameLength.v[uom].toFixed(0)
+      flankingValue = $_output.flankingFlameLeng.v[uom].toFixed(0)
+    } else if (ellipseValue === 'scorch') {
+      headingValue = $_output.headingScorchHeight.v[uom].toFixed(0)
+      backingValue = $_output.backingScorchHeight.v[uom].toFixed(0)
+      flankingValue = $_output.flankingScorchHeight.v[uom].toFixed(0)
+    }
   }
 </script>
 
-<svg class="defs-only" xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="display: block;">
+<svg class="defs-only" xmlns="http://www.w3.org/2000/svg"
+    width="0" height="0" style="display: block;">
   <defs>
+    <symbol id="fireCompass" >
+      <circle r={compass.r} class="compass-face"
+        transform='translate({compass.x},{compass.y})'/>
+      <!-- markers -->
+      {#each points as p}
+        <line	class='major-line' y1={compass.r-15} y2={compass.r}	transform='{center} rotate({p.deg})'/>
+        <text class='major-text' dominant-baseline="middle" text-anchor="middle"
+          x={p.x} y={p.y}>{p.text}</text>
+        <line	class='minor-line' y1={compass.r-10} y2={compass.r}	transform='{center} rotate({p.deg+15})'/>
+        <line	class='minor-line' y1={compass.r-10} y2={compass.r}	transform='{center} rotate({p.deg+30})'/>
+      {/each}
+    </symbol>
+
+    <symbol id='crossHairs'>
+      <line class='cross-hairs' x1={vp.x1} y1={vp.yc} x2={vp.x2} y2={vp.yc}/>
+      <line class='cross-hairs' x1={vp.xc} y1={vp.y1} x2={vp.xc} y2={vp.y2}/>
+      <text class='major-text' transform='{vpCenter} rotate({aspect}) translate(-5,5)'>
+        W</text>
+    </symbol>
+
+    <symbol id='fireBox'>
+      <line class='minor-line' x1={vp.x1} y1={vp.y1} x2={vp.x1} y2={vp.y2} />
+      <text x="0" y="128"  class='info-text'>
+        Head Spread Rate {$_output.spreadRate.v[uom].toFixed(2)}
+        {$_output.spreadRate.u[uom]}
+      </text>
+      <text x="0" y="120" class='info-text'>FireScope 1.0.0</text>
+    </symbol>
+
     <linearGradient id="fireGradient" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
       <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
     </linearGradient>
-    <linearGradient id="slopeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:rgb(186,238,190);stop-opacity:1" />
-      <stop offset="100%" style="stop-color:rgb(15,139,26);stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="windGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:rgb(200,200,240);stop-opacity:1" />
-      <stop offset="100%" style="stop-color:blue;stop-opacity:1" />
-    </linearGradient>
-    <radialGradient id="slopeBubbleGradient" cx="50%" cy="50%" r="80%" fx="50%" fy="50%">
+
+    <!-- fire ellipse -->
+    <symbol id='fireEllipse'>
+      <g transform='{center} rotate({fireHeadingFromNorth+180})'>
+        <!-- fire ellipse -->
+        <ellipse cx="0" cy="0" rx={fire.x} ry={fire.r} fill="url(#fireGradient)" />
+        <!-- major axis -->
+        <line class='minor-line' x1={-fire.r-2} y1="0" x2={fire.r+2} y2="0"
+          transform='rotate(90)'/>
+        <!-- minor axis -->
+        <line class='minor-line' x1={-fire.width+2} y1="0" x2={fire.width-2} y2="0" />
+      </g>
+    </symbol>
+
+    <symbol id='fireEllipseText'>
+      <text x={fire.head.x} y={fire.head.y} class='compass-text'
+          dominant-baseline="middle" text-anchor="middle">
+        {headingValue}
+      </text>
+      <text x={fire.back.x} y={fire.back.y} class='compass-text'
+          dominant-baseline="middle" text-anchor="middle">
+        {backingValue}
+      </text>
+      <text x={fire.flank.x} y={fire.flank.y} class='compass-text'
+          dominant-baseline="middle" text-anchor="middle">
+        {flankingValue}
+      </text>
+    </symbol>
+
+    <radialGradient id="slopeBubbleGradient"
+        cx="50%" cy="50%" r="80%" fx="50%" fy="50%">
       <stop offset="0%" stop-color="white" stop-opacity="0" />
       <stop offset="100%" stop-color="black" stop-opacity=".5" />
     </radialGradient>
 
-    <symbol id="fireScope" >
-      <circle r='48' class="fire-wind-slope-compass-face"
-        transform="translate(60,60)" />
-      <!-- markers -->
-      {#each points as {deg, text, x, y, cls}}
-        <line	class='major-tic'	y1='35'	y2='45'	transform='translate(60,60) rotate({deg})'/>
-        <text x={x} y={y} class='{cls}'>{text}</text>
-        <line class='minor-tic'	y1='42' y2='45'	transform='translate(60,60) rotate({deg + 15})'/>
-        <line class='minor-tic'	y1='42' y2='45'	transform='translate(60,60) rotate({deg + 30})'/>
-      {/each}
-      <!-- slope bubble -->
-      <g transform='translate(60,60) rotate({$_input.slopeDirectionAspect})'>
-        <ellipse cx="0" cy="44" rx='4' ry='4'
-          style="visibility:{bubble};"
+    <symbol id='slopeBubble'>
+      <g transform='{center} rotate({aspect})'>
+        <ellipse cx="0" cy="45" rx='5' ry='5'
+          style="visibility:{bubble.visible};"
           fill="url(#slopeBubbleGradient)" />
         <line class='slope-pointer'	y1='48' y2='54'
-          style="visibility:{bubble};" />
-        <text x="10"
-          style="font: normal 4px sans-serif; visibility:{bubble};"
-          transform='rotate(90 -16,15)'>{$_input.slopeSteepnessRatio.toFixed(0)}</text>
+          style="visibility:{bubble.visible};" />
       </g>
-      <!-- wind needle -->
-      <g transform='translate(60,60) rotate({$_input.windDirectionSourceFromNorth})'>
+    </symbol>
+
+    <symbol id='slopeBubbleText'>
+      <text x={bubble.xup} y={bubble.yup} class='compass-text'
+        dominant-baseline="middle" text-anchor="middle"
+        style="visibility:{bubble.visible};">
+        {slope.toFixed(0)}</text>
+    </symbol>
+
+    <linearGradient id="windGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:rgb(200,200,240);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:blue;stop-opacity:1" />
+    </linearGradient>
+
+    <symbol id='windNeedle'>
+      <g transform='{center} rotate({windFromNorth})'>
         <polygon class='wind-needle'
-          style="visibility:{wind};"
+          style="visibility:{wind.visible};"
           fill="url(#windGradient)"
           points="0,44 6,38, 4,38, 4,30, -4,30, -4,38, -6,38" />
           <!-- points="0,42 6,-42 0,-36 -6,-42" /> -->
-        <text x="1" style="font: normal 4px sans-serif;visibility:{wind};"
-          transform='rotate(90 -16,15)'>wind</text>
       </g>
-      <!-- fire ellipse -->
-      <g transform='translate(60,60) rotate({$_output.fireHeadingFromNorth+180})'>
-        <ellipse cx="0" cy="0" rx={rx} ry="40" fill="url(#fireGradient)" />
-        <text style="font: normal 4px sans-serif;"
-            transform='rotate(90 -16,15)'>
-            {$_output.headingSpreadRate.toFixed(2)}
-          </text>
-        <text x="-70" style="font: normal 4px sans-serif;"
-            transform='rotate(90 -16,15)'>
-          {$_output.backingSpreadRate.toFixed(2)}
-          </text>
-        <text x="-35" y={-35/$_output.lengthToWidthRatio} style="font: normal 4px sans-serif;"
-            transform='rotate(90 -16,15)'>
-          {$_output.flankingSpreadRate.toFixed(2)}
-          </text>
-      </g>
+    </symbol>
+
+    <symbol id='windNeedleText'>
+      <text x={wind.xup} y={wind.yup} class='compass-text'
+        dominant-baseline="middle" text-anchor="middle"
+        style="visibility:{wind.visible};">
+          {windSpeed.toFixed(0)}</text>
     </symbol>
   </defs>
 </svg>
 
 <div class="firescope-box">
-  <svg viewBox="0 0 130 130" width={width} height={height} >
-    <use xlink:href="#fireScope"/>
-      <text x="0" y="4"  class='info-text'>
-        Fuel Model {$_input.fuelModelCatalogKey}
-      </text>
-      <text x="0" y="124" class='info-text'>
-        FireScope 1.0.0
-      </text>
-       <line class='minor-tic' x1='0' y1='65' x2='130' y2='65'/>
-      <text x={center.x-4} y={center.y+4} class='big-text'>X</text>
-      <text x={xBubble} y={yBubble} style="font: normal 8px sans-serif;">
-        ASP
-      </text>
+  <svg viewBox={viewbox} width={width} height={height} >
+    <use xlink:href="#fireCompass" transform={compassPos}/>
+    <use xlink:href="#slopeBubble" transform={compassPos}/>
+    <use xlink:href="#slopeBubbleText" transform={compassPos}/>
+    <use xlink:href="#windNeedle" transform={compassPos}/>
+    <use xlink:href="#windNeedleText" transform={compassPos}/>
+    <use xlink:href="#fireEllipse" transform={compassPos}/>
+    <use xlink:href="#fireEllipseText" transform={compassPos}/>
+    <use xlink:href="#fireBox" transform='translate(0,0)'/>
   </svg>
 </div>
 
@@ -123,54 +245,34 @@
   .firescope-box {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.48);
   }
-  .big-text {
-    font: normal 8px sans-serif;
-  }
-  .compass-text-minor {
-    font: normal 8px sans-serif;
-  }
-
-  .compass-text-major {
-    font: bold 10px sans-serif;
-  }
-
-	.fire-needle {
-		stroke: rgb(180,0,0);
-    stroke-width: .5;
-	}
-
-	.fire-wind-slope-compass-face {
+  .compass-face {
 		stroke: #333;
     stroke-opacity: 50%;
 		fill: white;
 	}
-
+  .compass-text {
+    font: normal 6px sans-serif;
+  }
+	.cross-hairs {
+		stroke: red;
+		stroke-width: 0.25;
+	}
   .info-text {
     font: normal 4px sans-serif;
   }
-
-	.major-tic {
-		stroke: #333;
+	.major-line {
+		stroke: #111;
 		stroke-width: 1;
 	}
-
-	.minor-tic {
+  .major-text {
+    font: bold 8px sans-serif;
+  }
+	.minor-line {
 		stroke: #999;
 		stroke-width: 0.5;
 	}
-
-	.slope-needle {
-		stroke: rgb(16, 139, 26);
-    stroke-width: .5;
-	}
-
 	.slope-pointer {
 		stroke: #f00;
 		stroke-width: 0.5;
-	}
-
-	.wind-needle {
-		stroke: blue;
-    stroke-width: .5;
 	}
 </style>

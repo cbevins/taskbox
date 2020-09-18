@@ -10,7 +10,7 @@
   <div class="row">
     <div class="air-temp-slider">
       <p class="air-temp-label">Air</p>
-      <p class="air-temp-label">{f.toFixed(0)+'F\u00B0'}</p>
+      <p class="air-temp-value">{f.toFixed(0)+'F\u00B0'}</p>
       <p class="air-temp-value">{centigrade(f).toFixed(0) + 'C\u00B0'}</p>
       <div class="vertical-slider-wrapper">
         <input bind:value={f} type="range" min="20" max="120" step="1">

@@ -9,7 +9,7 @@
 {#if withOutput}
   <div class="row" style="margin: 5px">
     <OutputBox title1='Scorch' title2='Height' units='ft'
-      value={$_output.scorchHeight.toFixed(2)} />
+      value={$_output.scorchHeight.v[$_input.uom].toFixed(2)} />
   </div>
 {/if}
 

@@ -40,6 +40,7 @@ export const Input = [
 ]
 
 // Output units-of-measure
+const area = {b: 'ft2', e: 'ac', f: 'ac', m: 'ha'}
 const compass = {b: 'deg', e: 'deg', f: 'deg', m: 'deg'}
 const dist = {b: 'ft', e: 'ft', f: 'ft', m: 'm'}
 const distCh = {b: 'ft', e: 'ft', f: 'ch', m: 'm'}
@@ -69,13 +70,20 @@ export const Output = [
   {n: 'surface.primary.fuel.model.behave.parms.cured.herb.fraction', k: 'curedHerbFraction', u: fraction},
   {n: 'surface.fire.ellipse.back.flameLength', k: 'backingFlameLength', u: flame},
   {n: 'surface.fire.ellipse.back.scorchHeight', k: 'backingScorchHeight', u: scorch},
+  {n: 'surface.fire.ellipse.back.spreadDistance', k: 'backingSpreadDistance', u: distCh},
   {n: 'surface.fire.ellipse.back.spreadRate', k: 'backingSpreadRate', u: ros},
   {n: 'surface.fire.ellipse.flank.flameLength', k: 'flankingFlameLength', u: flame},
   {n: 'surface.fire.ellipse.flank.scorchHeight', k: 'flankingScorchHeight', u: scorch},
+  {n: 'surface.fire.ellipse.flank.spreadDistance', k: 'flankingSpreadDistance', u: distCh},
   {n: 'surface.fire.ellipse.flank.spreadRate', k: 'flankingSpreadRate', u: ros},
   {n: 'surface.fire.ellipse.head.flameLength', k: 'headingFlameLength', u: flame},
   {n: 'surface.fire.ellipse.head.scorchHeight', k: 'headingScorchHeight', u: scorch},
-  {n: 'surface.fire.ellipse.head.spreadRate', k: 'headingSpreadRate', u: ros}
+  {n: 'surface.fire.ellipse.head.spreadDistance', k: 'headingSpreadDistance', u: distCh},
+  {n: 'surface.fire.ellipse.head.spreadRate', k: 'headingSpreadRate', u: ros},
+  {n: 'surface.fire.ellipse.size.area', k: 'fireArea', u: area},
+  {n: 'surface.fire.ellipse.size.perimeter', k: 'firePerimeter', u: distCh},
+  {n: 'surface.fire.ellipse.size.width', k: 'fireWidth', u: distCh},
+  {n: 'surface.fire.ellipse.size.length', k: 'fireLength', u: distCh}
 ]
 
 export class SurfaceFire {

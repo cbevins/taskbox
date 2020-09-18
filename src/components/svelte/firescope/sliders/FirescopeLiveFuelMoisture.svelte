@@ -9,9 +9,9 @@
 {#if withOutput}
   <div class="row" style="margin: 5px">
     <OutputBox title1='Spread' title2='Rate' units='ft/min'
-      value={$_output.spreadRate.toFixed(2)} />
+      value={$_output.spreadRate.v[$_input.uom].toFixed(2)} />
     <OutputBox title1='Cured' title2='Herb' units='%'
-      value={(100*$_output.curedHerbFraction).toFixed(0)} />
+      value={(100*$_output.curedHerbFraction.v[$_input.uom]).toFixed(0)} />
   </div>
 {/if}
 

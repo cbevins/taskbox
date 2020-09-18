@@ -9,7 +9,7 @@
 {#if withOutput}
   <div class="row" style="margin: 5px">
     <OutputBox title1='Spread' title2='Rate' units='ft/min'
-      value={$_output.spreadRate.toFixed(2)} />
+      value={$_output.spreadRate.v[$_input.uom].toFixed(2)} />
   </div>
 {/if}
 

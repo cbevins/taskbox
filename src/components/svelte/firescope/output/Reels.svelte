@@ -21,6 +21,12 @@
   <OutputBox title1='Scorch' title2='Height'
     units={$_output.scorchHeight.u[uom]}
     value={$_output.scorchHeight.v[uom].toFixed(2)} />
+  <OutputBox title1='Fire' title2='Area'
+    units={$_output.fireArea.u[$_input.uom]}
+    value={$_output.fireArea.v[$_input.uom].toFixed(2)} />
+  <OutputBox title1='Fire' title2='Perim'
+    units={$_output.firePerimeter.u[$_input.uom]}
+    value={$_output.firePerimeter.v[$_input.uom].toFixed(0)} />
 </div>
 
 <style>

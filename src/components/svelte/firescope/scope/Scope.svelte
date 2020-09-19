@@ -167,7 +167,9 @@
     <symbol id='fireEllipse'>
       <g transform='{center} rotate({fireHeadingFromNorth+180})'>
         <!-- fire ellipse -->
-        <ellipse cx="0" cy="0" rx={fire.x} ry={fire.r} fill="url(#fireGradient)" />
+        {#each [1, .75, .5, .25] as f}
+          <ellipse cx="0" cy={(1-f)*fire.ign.y} rx={f*fire.x} ry={f*fire.r} fill="url(#fireGradient)" />
+        {/each}
         <!-- major axis -->
         <line class='minor-line' x1={-fire.r-2} y1="0" x2={fire.r+2} y2="0"
           transform='rotate(90)'/>

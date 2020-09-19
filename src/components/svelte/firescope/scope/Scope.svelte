@@ -25,6 +25,8 @@
   let wind = {visible: 'visible'}
   let uom = $_input.uom
   let headingValue, flankingValue, backingValue
+  let headDist = $_output.headingSpreadDistance.v.b
+  let backDist = $_output.backingSpreadDistance.v.b
 
   // viewport
   const viewbox = "0, 0, 130, 130"
@@ -100,11 +102,24 @@
     fire.flank.y = atY(compass.y, fire.width, fire.flank.deg),
     fire.flank0 = {x: -fire.r, y: width}
 
+    headDist = $_output.headingSpreadDistance.v.b
+    backDist = $_output.backingSpreadDistance.v.b
+    let radius = (backDist + headDist) / 2
+    let ratio = (radius > 0) ? (headDist - radius) / radius : 0
+    fire.ign = {
+      x: 0,
+      y: -fire.r * ratio
+    }
+
     let ellipseValue = $_input.behavior
     if (ellipseValue === 'spreadRate') {
       headingValue = $_output.headingSpreadRate.v[uom].toFixed(0)
       backingValue = $_output.backingSpreadRate.v[uom].toFixed(0)
       flankingValue = $_output.flankingSpreadRate.v[uom].toFixed(0)
+    } else if (ellipseValue === 'spreadDistance') {
+      headingValue = $_output.headingSpreadDistance.v[uom].toFixed(0)
+      backingValue = $_output.backingSpreadDistance.v[uom].toFixed(0)
+      flankingValue = $_output.flankingSpreadDistance.v[uom].toFixed(0)
     } else if (ellipseValue === 'flameLength') {
       headingValue = $_output.headingFlameLength.v[uom].toFixed(0)
       backingValue = $_output.backingFlameLength.v[uom].toFixed(0)
@@ -158,6 +173,12 @@
           transform='rotate(90)'/>
         <!-- minor axis -->
         <line class='minor-line' x1={-fire.width+2} y1="0" x2={fire.width-2} y2="0" />
+        <!-- ignition point -->
+        <circle cx={fire.ign.x} cy={fire.ign.y} r="1" stroke="black" stroke-width=".5" fill="red" />
+        <line class='minor-line' x1={fire.ign.x} y1={fire.ign.y}
+          x2={-fire.width} y2="0" />
+        <line class='minor-line' x1={fire.ign.x} y1={fire.ign.y}
+          x2={fire.width} y2="0" />
       </g>
     </symbol>
 

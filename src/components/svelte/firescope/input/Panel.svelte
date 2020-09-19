@@ -2,6 +2,7 @@
   import BehaviorSelector from './BehaviorSelector.svelte'
   import FirescopeAirTemperature from '../sliders/FirescopeAirTemperature.svelte'
   import FirescopeDeadFuelMoisture from '../sliders/FirescopeDeadFuelMoisture.svelte'
+  import FirescopeElapsedTime from '../sliders/FirescopeElapsedTime.svelte'
   import FirescopeLiveFuelMoisture from '../sliders/FirescopeLiveFuelMoisture.svelte'
   import FirescopeSlopeAspect from '../sliders/FirescopeSlopeAspect.svelte'
   import FirescopeWindSpeedDirection from '../sliders/FirescopeWindSpeedDirection.svelte'
@@ -20,7 +21,7 @@
   <tr>
     <td colspan='3'><FuelSelector _output={_output} _input={_input}/></td>
     <td><UnitsSelector _input={_input} _output={_output} /></td>
-    <td><BehaviorSelector _input={_input} _output={_output} /></td>
+    <td colspan='2'><BehaviorSelector _input={_input} _output={_output} /></td>
   </tr>
   <tr>
     <td><FirescopeDeadFuelMoisture _input={_input} _output={_output} /></td>
@@ -28,5 +29,6 @@
     <td><FirescopeSlopeAspect _input={_input} _output={_output} /></td>
     <td><FirescopeWindSpeedDirection _input={_input} _output={_output} /></td>
     <td><FirescopeAirTemperature _input={_input} _output={_output} /></td>
+    <td><FirescopeElapsedTime _input={_input} _output={_output} /></td>
   </tr>
 </table>

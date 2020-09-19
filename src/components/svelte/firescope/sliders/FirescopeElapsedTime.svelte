@@ -1,5 +1,5 @@
 <script>
-  import ElaspedTime from './ElaspedTime.svelte'
+  import ElapsedTime from './ElapsedTime.svelte'
   import OutputBox from '../output/Box.svelte'
   export let _input
   export let _output
@@ -26,7 +26,7 @@
 {/if}
 
 <div class="row">
-  <ElaspedTime bind:hours={$_input.timeSinceIgnition} />
+  <ElapsedTime bind:hours={$_input.timeSinceIgnition} />
 </div>
 <style>
 .row::after {

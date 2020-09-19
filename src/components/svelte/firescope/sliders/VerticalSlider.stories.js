@@ -1,10 +1,10 @@
 import VerticalSlider from './VerticalSlider.svelte'
 import AirTemperature from './AirTemperature.svelte'
 import DeadFuelMoisture from './DeadFuelMoisture.svelte'
-import ElaspedTime from './ElaspedTime.svelte'
+import ElapsedTime from './ElapsedTime.svelte'
 import FirescopeAirTemperature from './FirescopeAirTemperature.svelte'
 import FirescopeDeadFuelMoisture from './FirescopeDeadFuelMoisture.svelte'
-import FirescopeElaspedTime from './FirescopeElaspedTime.svelte'
+import FirescopeElapsedTime from './FirescopeElapsedTime.svelte'
 import FirescopeLiveFuelMoisture from './FirescopeLiveFuelMoisture.svelte'
 import FirescopeSlopeAspect from './FirescopeSlopeAspect.svelte'
 import FirescopeWindSpeedDirection from './FirescopeWindSpeedDirection.svelte'
@@ -52,8 +52,8 @@ export const deadFuelMoisture = () => ({
   }
 })
 
-export const elaspedTime = () => ({
-  Component: ElaspedTime,
+export const timeSinceIgnition = () => ({
+  Component: ElapsedTime,
   props: {
     hours: object('hours', 1),
   }
@@ -97,8 +97,8 @@ export const firescopeDeadFuelMoisture = () => ({
   }
 })
 
-export const firescopeElaspedTime = () => ({
-  Component: FirescopeElaspedTime,
+export const firescopeElapsedTime = () => ({
+  Component: FirescopeElapsedTime,
   props: {_input: _input, _output: _output,
     withOutput: object('showOutput', true)
   }

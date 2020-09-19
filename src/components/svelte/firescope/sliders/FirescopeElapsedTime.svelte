@@ -7,7 +7,7 @@
 </script>
 
 {#if withOutput}
-  <div class="row" style="margin: 5px">
+  <div class="slider-row" style="margin: 5px">
     <OutputBox title1='Fire' title2='Area' units='ac'
       value={$_output.fireArea.v[$_input.uom].toFixed(2)} />
     <OutputBox title1='Fire' title2='Perim' units='ft'
@@ -25,11 +25,11 @@
 </div>
 {/if}
 
-<div class="row">
+<div class="slider-row">
   <ElapsedTime bind:hours={$_input.timeSinceIgnition} />
 </div>
 <style>
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;

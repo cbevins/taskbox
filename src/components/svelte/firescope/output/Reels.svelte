@@ -8,7 +8,7 @@
   }
 </script>
 
-<div class="row">
+<div class="slider-row">
   <OutputBox title1='Spread' title2='Rate'
     units={$_output.spreadRate.u[uom]}
     value={$_output.spreadRate.v[uom].toFixed(2)} />
@@ -34,7 +34,7 @@
     box-sizing: border-box;
   }
 
-  .row::after {
+  .slider-row::after {
     content: "";
     clear: both;
     display: table;

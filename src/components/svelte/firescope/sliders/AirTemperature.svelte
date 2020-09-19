@@ -4,10 +4,10 @@
 </script>
 
 <div class="control-wrapper">
-  <div class="row">
+  <div class="slider-row">
     <p class="air-temp-title">Temp</p>
   </div>
-  <div class="row">
+  <div class="slider-row">
     <div class="air-temp-slider">
       <p class="air-temp-label">Air</p>
       <p class="air-temp-value">{f.toFixed(0)+'F\u00B0'}</p>
@@ -24,7 +24,7 @@
   box-sizing: border-box;
 }
 
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;
@@ -34,7 +34,7 @@
   width: 40px;
   height: 220px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,255,0,0.48);
 }
 .air-temp-label {
   font-family: "Lucida Sans", sans-serif;

@@ -8,7 +8,7 @@ export let line1 = ''
 export let line2 = ''
 </script>
 
-  <div class="row">
+  <div class="slider-row">
     <div class="vslider-slider">
       <p class="vslider-label">{label}</p>
       <p class="vslider-value">{line1}</p>
@@ -23,7 +23,7 @@ export let line2 = ''
 
 <style>
 * { box-sizing: border-box;}
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;

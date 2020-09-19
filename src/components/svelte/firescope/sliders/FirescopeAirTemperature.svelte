@@ -7,18 +7,18 @@
 </script>
 
 {#if withOutput}
-  <div class="row" style="margin: 5px">
+  <div class="slider-row" style="margin: 5px">
     <OutputBox title1='Scorch' title2='Height' units='ft'
       value={$_output.scorchHeight.v[$_input.uom].toFixed(2)} />
   </div>
 {/if}
 
-<div class="row">
+<div class="slider-row">
   <AirTemperature bind:f={$_input.airTemperature} />
 </div>
 
 <style>
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;

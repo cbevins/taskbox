@@ -7,7 +7,7 @@
 </script>
 
 {#if withOutput}
-  <div class="row" style="margin: 5px">
+  <div class="slider-row" style="margin: 5px">
     <OutputBox title1='Spread' title2='Rate' units='ft/min'
       value={$_output.spreadRate.v[$_input.uom].toFixed(2)} />
     <OutputBox title1='Fire' title2='Heading' units={'\u00B0 from No'}
@@ -24,7 +24,7 @@
 </div>
 
 <style>
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;

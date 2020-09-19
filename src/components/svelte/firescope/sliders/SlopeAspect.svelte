@@ -37,10 +37,10 @@
 </script>
 
 <div class="control-wrapper">
-  <div class="row">
+  <div class="slider-row">
       <p class="slope-title">Slope</p>
   </div>
-  <div class="row">
+  <div class="slider-row">
     <div class="slope-slider">
       <p class="slope-label">Steep</p>
       <p class="slope-value">{degrees.toFixed(0)}&#x00B0;</p>
@@ -67,7 +67,7 @@
 * {
   box-sizing: border-box;
 }
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;
@@ -76,7 +76,7 @@
   width: 80px;
   height: 220px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.48);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,255,0,0.48);
 }
 .slope-label {
   font-family: "Lucida Sans", sans-serif;

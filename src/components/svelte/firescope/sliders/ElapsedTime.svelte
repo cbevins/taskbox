@@ -4,10 +4,10 @@
 </script>
 
 <div class="control-wrapper">
-  <div class="row">
+  <div class="slider-row">
     <p class="time-title">Time</p>
   </div>
-  <div class="row">
+  <div class="slider-row">
     <div class="time-slider">
       <p class="time-label">Since</p>
       <p class="time-label">Ignitn</p>
@@ -24,7 +24,7 @@
   box-sizing: border-box;
 }
 
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;
@@ -34,7 +34,7 @@
   width: 46px;
   height: 220px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,255,0,0.48);
 }
 .time-label {
   font-family: "Lucida Sans", sans-serif;

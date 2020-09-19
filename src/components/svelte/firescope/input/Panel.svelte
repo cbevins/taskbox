@@ -17,13 +17,20 @@
   export let _output
 </script>
 
-<svelte:head>
-  <link rel="stylesheet" href="bootstrap.min.css">
-</svelte:head>
 
-<FireScope width=300 height=300 _output={_output} _input={_input}/>
-<table>
-  <tr><td colspan='6'><FirescopeReels _output={_output} _input={_input}/></td>
+<Container>
+  <Row>
+    <Col xs='12'>
+      <FireScope width=300 height=300 _output={_output} _input={_input}/>
+    </Col>
+  </Row>
+  <Row>
+    <Col>
+      <FirescopeReels _output={_output} _input={_input}/>
+    </Col>
+  </Row>
+  <Row>
+<Table>
   <tr>
     <td colspan='3'><FuelSelector _output={_output} _input={_input}/></td>
     <td><UnitsSelector _input={_input} _output={_output} /></td>
@@ -37,4 +44,6 @@
     <td><FirescopeAirTemperature _input={_input} _output={_output} /></td>
     <td><FirescopeElapsedTime _input={_input} _output={_output} /></td>
   </tr>
-</table>
+</Table>
+</Row>
+</Container>

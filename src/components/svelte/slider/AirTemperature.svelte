@@ -6,10 +6,10 @@
 </script>
 
 <div class="control-wrapper">
-  <div class="row">
+  <div class="slider-row">
     <p class="air-temp-title">Temp</p>
   </div>
-  <div class="row">
+  <div class="slider-row">
     <VerticalSlider label="Air" min="40" max="120" step="1"
       bind:value={f}
       line1={f.toFixed(decimals)+'F\u00B0'}
@@ -21,7 +21,7 @@
 * {
   box-sizing: border-box;
 }
-.row::after {
+.slider-row::after {
   content: "";
   clear: both;
   display: table;

@@ -1,5 +1,5 @@
 <script>
-// FireScope uses _input and _output props for its data
+  // FireScope uses _input and _output props for its data
   export let width
   export let height
   export let _input
@@ -261,6 +261,7 @@
 
 <style>
   .firescope-box {
+    margin-bottom: 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.48);
   }
   .compass-face {

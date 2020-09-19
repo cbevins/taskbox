@@ -1,4 +1,6 @@
 <script>
+  import { Container, Row, Col, Table } from 'sveltestrap'
+
   import BehaviorSelector from './BehaviorSelector.svelte'
   import FirescopeAirTemperature from '../sliders/FirescopeAirTemperature.svelte'
   import FirescopeDeadFuelMoisture from '../sliders/FirescopeDeadFuelMoisture.svelte'
@@ -14,6 +16,10 @@
   export let _input
   export let _output
 </script>
+
+<svelte:head>
+  <link rel="stylesheet" href="bootstrap.min.css">
+</svelte:head>
 
 <FireScope width=300 height=300 _output={_output} _input={_input}/>
 <table>

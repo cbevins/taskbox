@@ -16,7 +16,7 @@
     units='&#x00B0 from N';
     value={$_output.fireHeadingFromNorth.v[uom].toFixed(0)} />
   <OutputBox title1='Flame' title2='Length'
-    units={$_output.scorchHeight.u[uom]}
+    units={$_output.flameLength.u[uom]}
     value={$_output.flameLength.v[uom].toFixed(2)} />
   <OutputBox title1='Scorch' title2='Height'
     units={$_output.scorchHeight.u[uom]}

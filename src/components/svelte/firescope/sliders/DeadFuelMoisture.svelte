@@ -61,6 +61,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.2;
 }
 .fuel-moisture-title {
   font-family: "Lucida Sans", sans-serif;
@@ -68,6 +69,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.5;
 }
 .fuel-moisture-value {
   font-family: "Lucida Sans", sans-serif;
@@ -75,6 +77,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.2;
 }
 .fuel-moisture-slider {
   font-family: "Lucida Sans", sans-serif;

@@ -42,6 +42,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.2;
 }
 .time-title {
   font-family: "Lucida Sans", sans-serif;
@@ -49,6 +50,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.5;
 }
 .time-value {
   font-family: "Lucida Sans", sans-serif;
@@ -56,6 +58,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.2;
 }
 .time-slider {
   font-family: "Lucida Sans", sans-serif;

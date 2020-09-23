@@ -84,6 +84,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.2;
 }
 .slope-title {
   font-family: "Lucida Sans", sans-serif;
@@ -91,6 +92,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.5;
 }
 .slope-value {
   font-family: "Lucida Sans", sans-serif;
@@ -98,6 +100,7 @@
   text-align: center;
   color: green;
   margin: 0px;
+  line-height: 1.2;
 }
 .slope-slider {
   font-family: "Lucida Sans", sans-serif;

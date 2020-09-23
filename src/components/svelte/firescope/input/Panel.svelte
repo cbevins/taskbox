@@ -2,18 +2,10 @@
 	import { fade, slide } from 'svelte/transition';
   import { Button, Collapse, Container, Row, Col, Table } from 'sveltestrap'
 
-  import BehaviorSelector from './BehaviorSelector.svelte'
-  import FirescopeAirTemperature from '../sliders/FirescopeAirTemperature.svelte'
-  import FirescopeDeadFuelMoisture from '../sliders/FirescopeDeadFuelMoisture.svelte'
-  import FirescopeElapsedTime from '../sliders/FirescopeElapsedTime.svelte'
-  import FirescopeLiveFuelMoisture from '../sliders/FirescopeLiveFuelMoisture.svelte'
-  import FirescopeSlopeAspect from '../sliders/FirescopeSlopeAspect.svelte'
-  import FirescopeWindSpeedDirection from '../sliders/FirescopeWindSpeedDirection.svelte'
+  import InputPanel from '../sliders/InputPanel.svelte'
   import FirescopeReels from '../output/Reels.svelte'
   import FireScope from '../scope/Scope.svelte'
   import FireTable from '../tables/FireTable.svelte'
-  import FuelSelector from './FuelSelector.svelte'
-  import UnitsSelector from './UnitsSelector.svelte'
 
   export let _input
   export let _output
@@ -27,6 +19,7 @@
 
 <svelte:head>
   <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="global.css">
 </svelte:head>
 
 <Container>
@@ -73,25 +66,7 @@
     </Col>
   </Row>
 
-  <Row>
-{#if showInputs}
-<table>
-  <tr>
-    <td colspan='3'><FuelSelector _output={_output} _input={_input}/></td>
-    <td><UnitsSelector _input={_input} _output={_output} /></td>
-    <td colspan='2'><BehaviorSelector _input={_input} _output={_output} /></td>
-  </tr>
-  <tr>
-    <td><FirescopeDeadFuelMoisture _input={_input} _output={_output} /></td>
-    <td><FirescopeLiveFuelMoisture _input={_input} _output={_output} /></td>
-    <td><FirescopeSlopeAspect _input={_input} _output={_output} /></td>
-    <td><FirescopeWindSpeedDirection _input={_input} _output={_output} /></td>
-    <td><FirescopeAirTemperature _input={_input} _output={_output} /></td>
-    <td><FirescopeElapsedTime _input={_input} _output={_output} /></td>
-  </tr>
-</table>
-{/if}
-</Row>
+  <InputPanel  _input={_input} _output={_output} />
 </Container>
 
 <style>

@@ -8,7 +8,9 @@
   ]
 </script>
 
-<select class='select-css' bind:value={$_input.uom}>
+<select class='select-css'
+    style='width:100px;'
+    bind:value={$_input.uom}>
 	{#each uoms as uom}
 		<option value={uom.u}>
 			{uom.text}

@@ -58,7 +58,7 @@
 </script>
 
 <select class='select-css'
-style='width:285px;'
+    style='width:285px;'
     bind:value={$_input.fuelModelCatalogKey}>
 	{#each fuels as fuel}
 		<option value={fuel.key}>

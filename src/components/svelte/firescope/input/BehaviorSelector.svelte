@@ -8,7 +8,7 @@
   ]
 </script>
 
-<select class='select-css' bind:value={$_input.behavior}>
+<select class='firescope-select' bind:value={$_input.behavior}>
 	{#each behaviors as b}
 		<option value={b.v}>
 			{b.text}

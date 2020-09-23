@@ -57,7 +57,7 @@
   ]
 </script>
 
-<select class='select-css'
+<select class='firescope-select'
     style='width:285px;'
     bind:value={$_input.fuelModelCatalogKey}>
 	{#each fuels as fuel}

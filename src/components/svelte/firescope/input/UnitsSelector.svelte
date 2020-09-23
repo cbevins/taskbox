@@ -8,7 +8,7 @@
   ]
 </script>
 
-<select class='select-css'
+<select class='firescope-select'
     style='width:100px;'
     bind:value={$_input.uom}>
 	{#each uoms as uom}

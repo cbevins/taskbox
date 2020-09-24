@@ -23,7 +23,7 @@
       <p class="firescope-vslider-label">&nbsp;</p>
       <p class="firescope-vslider-value">{item.value + '%'}</p>
       <div class="firescope-vslider-wrapper">
-        <input bind:value={item.value} type="range" min="50" max="400" step="5">
+        <input bind:value={item.value} type="range" min="30" max="400" step="5">
       </div>
     </div>
   {/each}

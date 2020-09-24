@@ -1,36 +1,68 @@
 <script>
+  import { FireTableItems } from '../scope/FireTableItems.js'
   import { Button, Collapse, Container, Row, Col, Table } from 'sveltestrap'
   export let _input
   export let _output
   let uom = $_input.uom
-$: {
-  uom = $_input.uom
-}
-  const Items = [
-    {label: 'Fire Area', prop: 'fireArea', dec: 0},
-    {label: 'Fire Perimeter', prop: 'firePerimeter', dec: 0},
-    {label: 'Fire Heading from North', prop: 'fireHeadingFromNorth', dec: 0},
-    {label: 'Heading Spread Rate', prop: 'headingSpreadRate', dec: 2},
-    {label: 'Heading Spread Distance', prop: 'headingSpreadDistance', dec: 0},
-    {label: 'Heading Flame Length', prop: 'headingFlameLength', dec: 2},
-    {label: 'Heading Scorch Height', prop: 'headingScorchHeight', dec: 0},
-    {label: 'Flanking Spread Rate', prop: 'flankingSpreadRate', dec: 2},
-    {label: 'Flanking Spread Distance', prop: 'flankingSpreadDistance', dec: 0},
-    {label: 'Flanking Flame Length', prop: 'flankingFlameLength', dec: 2},
-    {label: 'Flanking Scorch Height', prop: 'flankingScorchHeight', dec: 0},
-    {label: 'Backing Spread Rate', prop: 'backingSpreadRate', dec: 2},
-    {label: 'Backing Spread Distance', prop: 'backingSpreadDistance', dec: 0},
-    {label: 'Backing Flame Length', prop: 'backingFlameLength', dec: 2},
-    {label: 'Backing Scorch Height', prop: 'backingScorchHeight', dec: 0},
-  ]
+  $: {
+    uom = $_input.uom
+  }
 </script>
 
-<Table>
-  {#each Items as item}
-    <tr>
-      <td>{item.label}</td>
-      <td align='right'>{$_output[item.prop].v[uom].toFixed(item.dec)}</td>
-      <td align='left'>{$_output[item.prop].u[uom]}</td>
-    </tr>
-  {/each}
-</Table>
+<div style="overflow-x:auto;">
+  <table>
+    {#each FireTableItems as item}
+      <tr>
+        <td class='text-label'>{item.label}&nbsp;{item.label}</td>
+        <td class='text-value'>{$_output[item.prop].v[uom].toFixed(item.dec)}</td>
+        <td class='text-units'>{$_output[item.prop].u[uom]}</td>
+      </tr>
+    {/each}
+  </table>
+</div>
+
+<style>
+table {
+  width: 100%;
+  border: 1px solid green;
+  border-collapse: collapse;
+  padding: 0;
+}
+/* caption {
+  caption-side: bottom;
+  text-align: center;
+} */
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+tr:hover {
+  background-color: #f5f5f5;
+}
+/* th {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+} */
+td {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+.text-label {
+  font-family: "Lucida Sans", sans-serif;
+  font-size: 12px;
+  text-align: left;
+}
+.text-units {
+  font-family: "Lucida Sans", sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: normal;
+  text-align: left;
+}
+.text-value {
+  font-family: "Lucida Sans", sans-serif;
+  font-size: 12px;
+  text-align: right;
+}
+</style>

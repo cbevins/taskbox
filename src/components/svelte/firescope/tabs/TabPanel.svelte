@@ -1,4 +1,5 @@
 <script>
+	import { fade, slide } from 'svelte/transition';
 	import { getContext } from 'svelte'
 	import { TABS } from './Tabs.svelte'
 
@@ -9,5 +10,7 @@
 </script>
 
 {#if $selectedPanel === panel}
-	<slot></slot>
+  <div transition:slide>
+	  <slot></slot>
+  </div>
 {/if}

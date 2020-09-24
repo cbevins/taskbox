@@ -1,4 +1,5 @@
 <script>
+  import SvgFireTable from './SvgFireTable.svelte'
   // FireScope uses _input and _output props for its data
   export let width
   export let height
@@ -257,6 +258,8 @@
     <use xlink:href="#fireEllipseText" transform={compassPos}/>
     <use xlink:href="#fireBox" transform='translate(0,0)'/>
   </svg>
+  <SvgFireTable viewbox={viewbox} width={width} height={height}
+    uom={uom} _output={_output} _input={_input}/>
 </div>
 
 <style>

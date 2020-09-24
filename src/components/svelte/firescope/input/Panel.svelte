@@ -6,55 +6,53 @@
   import FirescopeReels from '../output/Reels.svelte'
   import FireScope from '../scope/Scope.svelte'
   import FireTable from '../tables/FireTable.svelte'
+  import Tab from '../tabs/Tab.svelte'
+  import Tabs from '../tabs/Tabs.svelte'
+  import TabList from '../tabs/TabList.svelte'
+  import TabPanel from '../tabs/TabPanel.svelte'
 
   export let _input
   export let _output
-  let activePage = 'firescope'
   let showInputs = true
   let showReels = false
   function handleInputs() {showInputs = !showInputs}
   function handleReels() {showReels = !showReels}
-  function showPage(e,p) {activePage=p}
 </script>
 
 <svelte:head>
   <link rel="stylesheet" href="bootstrap.min.css">
-  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="firescope.css">
 </svelte:head>
 
 <Container>
   <Row>
-    <Button outline color="primary" size='sm' class="mb-3"
-      on:click={e => showPage(e,'firescope')}>
-      FireScope
-    </Button>
-    <Button outline color="primary" size='sm' class="mb-3"
-      on:click={e => showPage(e,'tables')}>
-      Tables
-    </Button>
-    <Button outline color="primary" size='sm' class="mb-3"
-        on:click={e => showPage(e,'graphs')}>
-      Graphs
-    </Button>
-    <Button outline color="secondary" size='sm' class="mb-3"
-        on:click={handleReels}>
-      Toggle Reels
-    </Button>
-    <Button outline color="secondary" size='sm' class="mb-3"
-        on:click={handleInputs}>
-      Toggle Inputs
-    </Button>
+    <Tabs>
+      <TabList>
+        <Tab>Firescope</Tab>
+        <Tab>Graphs</Tab>
+        <Tab>Tables</Tab>
+      </TabList>
+
+      <TabPanel>
+        <FireScope width=300 height=300 _output={_output} _input={_input}/>
+      </TabPanel>
+
+      <TabPanel>
+        <p class='dummy-page' transition:fade>This will be the Graphs Page!</p>
+      </TabPanel>
+
+      <TabPanel>
+        <FireTable _output={_output} _input={_input}/>
+      </TabPanel>
+    </Tabs>
   </Row>
   <Row>
-    <Col xs='12'>
-      {#if activePage === 'firescope'}
-        <FireScope width=300 height=300 _output={_output} _input={_input}/>
-      {:else if activePage === 'graphs'}
-        <p class='dummy-page' transition:fade>This will be the Graphs Page!</p>
-      {:else if activePage === 'tables'}
-        <FireTable _output={_output} _input={_input}/>
-      {/if}
-    </Col>
+    <Button outline color="secondary" size='sm' class="mb-3" on:click={handleReels}>
+      Toggle Reels
+    </Button>
+    <Button outline color="secondary" size='sm' class="mb-3" on:click={handleInputs}>
+      Toggle Inputs
+    </Button>
   </Row>
   <Row>
     <Col>
@@ -66,7 +64,11 @@
     </Col>
   </Row>
 
-  <InputPanel  _input={_input} _output={_output} />
+  {#if showInputs}
+    <div transition:fade>
+      <InputPanel  _input={_input} _output={_output} />
+    </div>
+  {/if}
 </Container>
 
 <style>

@@ -5,6 +5,7 @@
   export let _input
   export let _output
   let uom = $_input.uom
+  // The following is REQUIRED for units auto-updating
   $: {
     uom = $_input.uom
   }

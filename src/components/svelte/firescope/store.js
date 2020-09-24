@@ -7,6 +7,6 @@ import { SurfaceFire } from './SurfaceFire.js'
 export const model = new SurfaceFire()
 export const _input = writable(model.input)
 export const _output = derived(_input, $_input => {
-  let output = model.run($_input)
+  let output = model.runSingle($_input)
   return {...output}
 })

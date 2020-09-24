@@ -22,21 +22,45 @@ export const Config = [
  * n: Dag Node key
  * k: this.input[k]
  * v: initial value in display units
- * f: conversion factor from display units into base units
+ * f: conversion factor from screen display units into base units
+ * min, max, step: input slider and output graph scale parms
  */
 export const Input = [
-  {n:'surface.primary.fuel.model.catalogKey', k: 'fuelModelCatalogKey', v: '124', f: null},
-  {n:'site.moisture.dead.tl1h', k: 'fuelMoistureDead1', v: 5, f: 0.01},
-  {n:'site.moisture.dead.tl10h', k: 'fuelMoistureDead10', v: 7, f: 0.01},
-  {n:'site.moisture.dead.tl100h', k: 'fuelMoistureDead100', v: 9, f: 0.01},
-  {n:'site.moisture.live.herb', k: 'fuelMoistureLiveHerb', v: 50, f: 0.01}, // input % to ratio
-  {n:'site.moisture.live.stem', k: 'fuelMoistureLiveStem', v: 150, f: 0.01},
-  {n:'site.slope.steepness.ratio', k: 'slopeSteepnessRatio', v: 120, f: 0.01},
-  {n:'site.slope.direction.aspect', k: 'slopeDirectionAspect', v: 225, f: null},
-  {n:'site.wind.direction.source.fromNorth', k: 'windDirectionSourceFromNorth', v: 270, f: null},
-  {n:'site.wind.speed.atMidflame', k: 'windSpeedAtMidflame', v: 10, f: 88}, // input mph to fpm
-  {n:'site.temperature.air', k: 'airTemperature', v: 95, f: null},
-  {n:'site.fire.time.sinceIgnition', k: 'timeSinceIgnition', v: 1, f: 60} // input hour to min
+  {n:'surface.primary.fuel.model.catalogKey', k: 'fuelModelCatalogKey',
+    v: '124', f: null, min: null, max: null, step: null},
+  {n:'site.moisture.dead.tl1h', k: 'fuelMoistureDead1',
+    v: 5, f: 0.01,
+    min: 1, max: 40, step: 1},
+  {n:'site.moisture.dead.tl10h', k: 'fuelMoistureDead10',
+    v: 7, f: 0.01,
+    min: 1, max: 40, step: 1},
+  {n:'site.moisture.dead.tl100h', k: 'fuelMoistureDead100',
+    v: 9, f: 0.01,
+    min: 1, max: 40, step: 1},
+  {n:'site.moisture.live.herb', k: 'fuelMoistureLiveHerb',
+    v: 50, f: 0.01, // input % to ratio
+    min: 50, max: 40, step: 10},
+  {n:'site.moisture.live.stem', k: 'fuelMoistureLiveStem',
+    v: 150, f: 0.01,
+    min: 50, max: 40, step: 10},
+  {n:'site.slope.steepness.ratio', k: 'slopeSteepnessRatio',
+    v: 120, f: 0.01,
+    min: 0, max: 200, step: 5}, // 0-200%, and 5% is 3 deg
+  {n:'site.slope.direction.aspect', k: 'slopeDirectionAspect',
+    v: 225, f: null,
+    min:0, max: 360, step: 5},
+  {n:'site.wind.direction.source.fromNorth', k: 'windDirectionSourceFromNorth',
+    v: 270, f: null,
+    min:0, max: 360, step: 5},
+  {n:'site.wind.speed.atMidflame', k: 'windSpeedAtMidflame',
+    v: 10, f: 88, // input mph to fpm
+    min: 0, max: 40, step: 1},
+  {n:'site.temperature.air', k: 'airTemperature',
+    v: 95, f: null,
+    min: 30, max: 120, step: 5},
+  {n:'site.fire.time.sinceIgnition', k: 'timeSinceIgnition',
+    v: 1, f: 60, // input hour to min
+    min: 0, max: 24, step: 0.25},
 ]
 
 // Output units-of-measure
@@ -48,7 +72,7 @@ const fraction = {b: 'ratio', e: 'percent', f: 'percent', m: 'percent'}
 const flame = {b: 'ft', e: 'ft', f: 'ft', m: 'm'}
 const fli = {b: 'btu/ft/s', e: 'btu/ft/s', f: 'btu/ft/s', m: 'J/m/s'}
 const hpua = {b: 'btu/ft2', e: 'btu/ft2', f: 'btu/ft2', m: 'J/m2'}
-const none = {b: null, e: null, f: null, m: null}
+const none = {b: '', e: '', f: '', m: ''}
 const ros = {b: 'ft/min', e: 'ft/min',  f: 'ch/h', m: 'm/min'}
 const rxi = {b: 'btu/ft2/min', e: 'btu/ft2/min', f: 'btu/ft2/min', m: 'J/m2/min'}
 const scorch = {b: 'ft', e: 'ft', f: 'ft', m: 'm'}
@@ -89,31 +113,48 @@ export const Output = [
 export class SurfaceFire {
   constructor () {
     this.dag = new Dag.Bpx()
-    this.dag.setConfigs(Config)
-
-    // The following selected Nodes will be used by the _output store
-    this.dag.setSelected(Output.map(out => [out.n, true]))
 
     // The following inputs are required for the selected Nodes
     this.input = {
       dag: this.dag, // included for easy access by components from the _input prop
       uom: 'e', // display units-of-measure set: 'b', 'e', 'f', 'm'
-      behavior: 'spreadRate' // variable shown on fire ellipse
+      behavior: 'spreadRate', // variable shown on fire ellipse
     }
     Input.forEach(inp => {this.input[inp.k] = inp.v})
-    this.run()
+
+    this.range = {
+      x: {
+        key: 'windSpeedAtMidflame',
+        node: null,
+        spec: null, // Input element
+        values: {b: [], e: [], f: [], m: []}
+      },
+      y: {
+        key: 'headingSpreadRate',
+        node: null,
+        spec: null, // Output element
+        values: {b: [], e: [], f: [], m: []}
+      }
+    }
+
+    this.dag.setConfigs(Config)
+    this.runSingle()
   }
 
-  run (input=null) {
-    if (input) this.input = input
-    // Convert this.input object's display values to base values,
+  runSingle (input=null) {
+    if (input) {
+      this.input = input
+    }
+    // The following selected Nodes will be used by the _output store
+    this.dag.setSelected(Output.map(out => [out.n, true]))
+    // Convert this.input object's input display values to base values,
     // build the Dag input array, and submit for a run
     const inputData = Input.map(inp =>
       [inp.n, [(inp.f === null) ? this.input[inp.k] : this.input[inp.k] * inp.f]])
     this.dag.runInputs(inputData)
 
     // Retrieve selected Nodes into this.output object
-    this.output = {dag: this.dag}
+    this.output = {dag: this.dag, range: {}}
     Output.forEach(out => {
       const node = this.dag.get(out.n)
       const b = node.value
@@ -124,7 +165,48 @@ export class SurfaceFire {
       const u = out.u
       this.output[out.k] = {v: v, u: u}
     })
+    this.runRange()
+    this.output.range = this.range
     // Return this.output so run() can be used inside the Svelte derived store
     return this.output
+  }
+
+  findSpec(specArray, key) {
+    for(let i=0; i<specArray.length; i++) {
+      if (specArray[i].k === key) {
+        return specArray[i]
+      }
+    }
+    return null
+  }
+
+  // Run range variable
+  runRange() {
+    const x = this.range.x
+    const y = this.range.y
+    x.spec = this.findSpec(Input, x.key)
+    x.node = this.dag.get(x.spec.n)
+    x.values = {b: [], e: [], f: [], m: []}
+    y.spec = this.findSpec(Output, y.key)
+    y.node = this.dag.get(y.spec.n)
+    y.values = {b: [], e: [], f: [], m: []}
+
+    // Generate the x base input values
+    for(let xv=x.spec.min; xv<=x.spec.max+1e-6; xv+=x.spec.step) {
+      x.values.b.push(xv * x.spec.f)
+      // \TODO - store e[], m[], f[] values
+    }
+    // Run the inputs
+    this.dag.setSelected([[y.node, true]])
+    this.dag.runInputs([[x.node, x.values.b]])
+    // Store the outputs
+    y.values.b = [...this.dag.dna.results.map.get(y.node)]
+    const u = y.spec.u
+    const v = y.node.variant
+    y.values.b.forEach(bv => {
+      y.values.e.push((u === none ) ? bv : v.baseAsUom(bv, u.e))
+      y.values.f.push((u === none ) ? bv : v.baseAsUom(bv, u.f))
+      y.values.m.push((u === none ) ? bv : v.baseAsUom(bv, u.m))
+    })
   }
 }

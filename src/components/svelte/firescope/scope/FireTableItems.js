@@ -29,5 +29,5 @@ export const FireTableItems = [
   {group: backing, label: distance, prop: 'backingSpreadDistance', dec: 0},
   {group: backing, label: flame, prop: 'backingFlameLength', dec: 2},
   {group: backing, label: scorch, prop: 'backingScorchHeight', dec: 2},
-  {group: fuel, label: 'Cured Herb Fraction', prop: 'curedHerbFraction', dec: 2},
+  {group: fuel, label: 'Cured Herb', prop: 'curedHerbFraction', dec: 2},
 ]

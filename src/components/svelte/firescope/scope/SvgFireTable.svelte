@@ -20,7 +20,7 @@
       {item.group + ' ' +item.label}</text>
     <text x="50" y={6*idx+6} class='value-text'>
       {thousands($_output[item.prop].v[uom], item.dec)}</text>
-    <text x="70" y={6*idx} class='units-text'>
+    <text x="70" y={6*idx+6} class='units-text'>
       {$_output[item.prop].u[uom]}
     </text>
   {/each}
@@ -30,10 +30,10 @@
   .info-text {
     font: normal 4px sans-serif;
   }
- 	.sep-line {
+ 	/* .sep-line {
 		stroke: #111;
 		stroke-width: 0.5;
-	}
+	} */
   .units-text {
     font: normal italic 4px sans-serif;
     text-align: right;

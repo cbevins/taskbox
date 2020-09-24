@@ -68,6 +68,7 @@
   let bubble = {x: 0, y: 0}
   let fire = {x: 0, r: 35}
 
+  // The following is REQUIRED for units auto-updating
   $: {
     uom = $_input.uom
     slope = $_input.slopeSteepnessRatio

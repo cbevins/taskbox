@@ -6,6 +6,7 @@
   import FirescopeReels from '../output/Reels.svelte'
   import FireScope from '../scope/Scope.svelte'
   import FireTable from '../tables/FireTable.svelte'
+  import Graph from '../graphs/Graph.svelte'
   import Tab from '../tabs/Tab.svelte'
   import Tabs from '../tabs/Tabs.svelte'
   import TabList from '../tabs/TabList.svelte'
@@ -38,7 +39,7 @@
       </TabPanel>
 
       <TabPanel>
-        <p class='dummy-page' transition:fade>This will be the Graphs Page!</p>
+        <Graph _input={_input} _output={_output} />
       </TabPanel>
 
       <TabPanel>
@@ -70,10 +71,3 @@
     </div>
   {/if}
 </Container>
-
-<style>
-  .dummy-page {
-    height: 300px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.48);
-  }
-</style>

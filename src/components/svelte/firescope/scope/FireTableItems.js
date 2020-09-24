@@ -3,6 +3,7 @@ const direction = 'Fire Heading'
 const distance = 'Spread Distance'
 const ellipse = 'Fire Ellipse'
 const flanking = 'Flanking'
+const fuel = 'Fuel'
 const heading = 'Heading'
 const flame = 'Flame Length'
 const ros = 'Spread Rate'
@@ -19,13 +20,14 @@ export const FireTableItems = [
   {group: heading, label: ros, prop: 'headingSpreadRate', dec: 2},
   {group: heading, label: distance, prop: 'headingSpreadDistance', dec: 0},
   {group: heading, label: flame, prop: 'headingFlameLength', dec: 2},
-  {group: heading, label: scorch, prop: 'headingScorchHeight', dec: 0},
+  {group: heading, label: scorch, prop: 'headingScorchHeight', dec: 2},
   {group: flanking, label:ros, prop: 'flankingSpreadRate', dec: 2},
   {group: flanking, label: distance, prop: 'flankingSpreadDistance', dec: 0},
   {group: flanking, label: flame, prop: 'flankingFlameLength', dec: 2},
-  {group: flanking, label: scorch, prop: 'flankingScorchHeight', dec: 0},
+  {group: flanking, label: scorch, prop: 'flankingScorchHeight', dec: 2},
   {group: backing, label: ros, prop: 'backingSpreadRate', dec: 2},
   {group: backing, label: distance, prop: 'backingSpreadDistance', dec: 0},
   {group: backing, label: flame, prop: 'backingFlameLength', dec: 2},
-  {group: backing, label: scorch, prop: 'backingScorchHeight', dec: 0},
+  {group: backing, label: scorch, prop: 'backingScorchHeight', dec: 2},
+  {group: fuel, label: 'Cured Herb Fraction', prop: 'curedHerbFraction', dec: 2},
 ]

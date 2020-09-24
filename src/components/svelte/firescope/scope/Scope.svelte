@@ -151,12 +151,8 @@
 
     <symbol id='fireBox'>
       <line class='minor-line' x1={vp.x1} y1={vp.y1} x2={vp.x1} y2={vp.y2} />
-      <text x="0" y="128"  class='info-text'>
-        Head Spread Rate {$_output.spreadRate.v[uom].toFixed(2)}
-        {$_output.spreadRate.u[uom]}
-      </text>
-      <text x="0" y="120" class='info-text'>FireScope 1.0.0</text>
       <image x="0" y="0" href="images/SEMfavicon.png" height="12" width="12"/>
+      <text x="15" y="8" class='info-text'>FireScope 1.0.0</text>
     </symbol>
 
     <linearGradient id="fireGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -258,7 +254,8 @@
     <use xlink:href="#fireEllipseText" transform={compassPos}/>
     <use xlink:href="#fireBox" transform='translate(0,0)'/>
   </svg>
-  <SvgFireTable viewbox={viewbox} width={width} height={height}
+  <SvgFireTable viewbox="0, 0, 80, 130"
+    width={width} height={height}
     uom={uom} _output={_output} _input={_input}/>
 </div>
 

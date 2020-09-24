@@ -1,5 +1,6 @@
 <script>
   import { FireTableItems } from '../scope/FireTableItems.js'
+  import { thousands } from '../utils.js'
   import { Button, Collapse, Container, Row, Col, Table } from 'sveltestrap'
   export let _input
   export let _output
@@ -13,8 +14,8 @@
   <table>
     {#each FireTableItems as item}
       <tr>
-        <td class='text-label'>{item.label}&nbsp;{item.label}</td>
-        <td class='text-value'>{$_output[item.prop].v[uom].toFixed(item.dec)}</td>
+        <td class='text-label'>{item.group}&nbsp;{item.label}</td>
+        <td class='text-value'>{thousands($_output[item.prop].v[uom], item.dec)}</td>
         <td class='text-units'>{$_output[item.prop].u[uom]}</td>
       </tr>
     {/each}

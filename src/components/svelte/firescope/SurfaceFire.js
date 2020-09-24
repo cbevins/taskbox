@@ -39,10 +39,10 @@ export const Input = [
     min: 1, max: 40, step: 1},
   {n:'site.moisture.live.herb', k: 'fuelMoistureLiveHerb',
     v: 50, f: 0.01, // input % to ratio
-    min: 50, max: 40, step: 10},
+    min: 30, max: 400, step: 10},
   {n:'site.moisture.live.stem', k: 'fuelMoistureLiveStem',
     v: 150, f: 0.01,
-    min: 50, max: 40, step: 10},
+    min: 30, max: 400, step: 10},
   {n:'site.slope.steepness.ratio', k: 'slopeSteepnessRatio',
     v: 120, f: 0.01,
     min: 0, max: 200, step: 5}, // 0-200%, and 5% is 3 deg

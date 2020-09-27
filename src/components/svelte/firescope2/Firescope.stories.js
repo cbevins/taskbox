@@ -10,6 +10,8 @@ import ElapsedTime from './components/sliders/ElapsedTime.svelte'
 import Firescope from './components/Firescope.svelte'
 import InputPanel from './components/InputPanel.svelte'
 import LiveFuelMoisture from './components/sliders/LiveFuelMoisture.svelte'
+import SlopeAspect from './components/sliders/SlopeAspect.svelte'
+import WindSpeedDirection from './components/sliders/WindSpeedDirection.svelte'
 
 export default {
   title: 'Firescope2/InputPanel',
@@ -50,5 +52,21 @@ export const sliderLiveFuelMoisture = () => ({
   props: {
     herb: object('herb', .5),
     stem: object('stem', .5),
+  }
+})
+
+export const sliderSlopeAspect = () => ({
+  Component: SlopeAspect,
+  props: {
+    steepness: object('steepness', 1),
+    aspect: object('aspect', 225),
+  }
+})
+
+export const sliderWindSpeedDirection = () => ({
+  Component: WindSpeedDirection,
+  props: {
+    speed: object('speed', 880),
+    direction: object('direction', 270),
   }
 })

@@ -52,8 +52,8 @@ const moisture = {
   decimals: {b: 2, e: 0, f: 0, m: 0, i: 0}
 }
 const slope = {
-  units: {b: 'ratio', e: '%', f: '%', m: '%', i: '%'},
-  decimals: {b: 2, e: 0, f: 0, m: 0, i: 0}
+  units: {b: 'ratio', e: '%', f: '%', m: '%', i: 'ratio'},
+  decimals: {b: 2, e: 0, f: 0, m: 0, i: 2}
 }
 const temp = {
   units: {b: 'F', e: 'F', f: 'F', m: 'C', i: 'F'},
@@ -64,8 +64,8 @@ const time = {
   decimals: {b: 0, e: 2, f: 2, m: 2, i: 0}
 }
 const wind = {
-  units: {b: 'ft/min', e: 'mi/h', f: 'mi/h', m: 'km/h', i: 'mi/h'},
-  decimals: {b: 0, e: 2, f: 2, m: 2, i: 2}
+  units: {b: 'ft/min', e: 'mi/h', f: 'mi/h', m: 'km/h', i: 'ft/min'},
+  decimals: {b: 0, e: 0, f: 0, m: 0, i: 0}
 }
 
 // The following inputs are required for the selected Nodes
@@ -121,8 +121,8 @@ export const Input = {
   slopeSteepnessRatio: {
     nodeKey: 'site.slope.steepness.ratio',
     display: slope,
-    range: {min: 0, max: 500, step: 5}, // 0-200%, and 5% is 3 deg
-    value: {i: 100}
+    range: {min: 0, max: 5, step: .05}, // 0-200%, and 5% is 3 deg
+    value: {i: 1}
   },
   timeSinceIgnition: {
     nodeKey: 'site.fire.time.sinceIgnition',
@@ -134,13 +134,13 @@ export const Input = {
     nodeKey: 'site.wind.direction.source.fromNorth',
     display: compass,
     range: {min:0, max: 360, step: 5},
-    value: {i: 225}
+    value: {i: 270}
   },
   windSpeedAtMidflame: {
     nodeKey: 'site.wind.speed.atMidflame',
     display: wind,
-    range: {min: 0, max: 40, step: 1},
-    value: {i: 10}
+    range: {min: 0, max: 40*88, step: 88},
+    value: {i: 880}
   },
 }
 
